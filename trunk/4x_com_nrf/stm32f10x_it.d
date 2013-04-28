@@ -1,0 +1,12 @@
+stm32f10x_it.o: stm32f10x_it.c
+stm32f10x_it.o: stm32f10x_it.h
+stm32f10x_it.o: .\MDKLibrary\library\inc\stm32f10x_lib.h
+stm32f10x_it.o: .\MDKLibrary\library\inc\stm32f10x_map.h
+stm32f10x_it.o: .\MDKLibrary\stm32f10x_conf.h
+stm32f10x_it.o: .\MDKLibrary\library\inc\stm32f10x_type.h
+stm32f10x_it.o: .\MDKLibrary\library\inc\cortexm3_macro.h
+stm32f10x_it.o: .\MDKLibrary\library\inc\stm32f10x_flash.h
+stm32f10x_it.o: .\MDKLibrary\library\inc\stm32f10x_gpio.h
+stm32f10x_it.o: .\MDKLibrary\library\inc\stm32f10x_nvic.h
+stm32f10x_it.o: .\MDKLibrary\library\inc\stm32f10x_rcc.h
+stm32f10x_it.o: .\MDKLibrary\library\inc\stm32f10x_tim.h

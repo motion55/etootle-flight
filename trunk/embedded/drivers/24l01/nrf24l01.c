@@ -77,7 +77,9 @@ uint8_t nrf_write_buf(uint8_t reg, const uint8_t *pBuf, uint32_t len)
 uint8_t nrf_tx_packet(const uint8_t *txbuf, uint32_t len)
 {
 	uint8_t status;
-	NRF_CE_DISABLE;
+    status = nrf_read_reg(NRF_STATUS);
+    if(status & NRF_TX_FULL) return NRF_TX_FULL;
+    NRF_CE_DISABLE;
   	nrf_write_buf(NRF_WR_TX_PLOAD,txbuf,len);
  	NRF_CE_ENABLE; // start transmit
 	while(!NRF_READY); // wait transfer done
@@ -97,7 +99,10 @@ uint8_t nrf_tx_packet(const uint8_t *txbuf, uint32_t len)
 
 uint8_t nrf_tx_packet_no_wait(const uint8_t *txbuf, uint32_t len)
 {
-	NRF_CE_DISABLE;
+    uint8_t status;
+    status = nrf_read_reg(NRF_STATUS);
+    if(status & NRF_TX_FULL) return 1;
+    NRF_CE_DISABLE;
   	nrf_write_buf(NRF_WR_TX_PLOAD,txbuf,len);
  	NRF_CE_ENABLE; // start transmit
     delay_us(10);  // delay 10 us
@@ -136,7 +141,7 @@ void nrf_rx_mode_no_aa(const uint8_t* addr, uint8_t addr_len, uint32_t rx_len, u
   	nrf_write_reg(NRF_WRITE_REG|NRF_EN_RXADDR, NRF_ERX_P0);
   	nrf_write_reg(NRF_WRITE_REG|NRF_RF_CH,channel);
   	nrf_write_reg(NRF_WRITE_REG|NRF_RX_PW_P0, rx_len);   
-  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_1Mbps);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_2Mbps);
   	nrf_write_reg(NRF_WRITE_REG|NRF_CONFIG,
         NRF_EN_ALL_IRQ | NRF_EN_CRC | NRF_CRC_2B | NRF_POWER_UP | NRF_PRIM_RX);
     
@@ -158,7 +163,7 @@ void nrf_rx_mode(const uint8_t* addr, uint8_t addr_len, uint32_t rx_len, uint8_t
   	nrf_write_reg(NRF_WRITE_REG|NRF_RF_CH,channel);
   	nrf_write_reg(NRF_WRITE_REG|NRF_RX_PW_P0, rx_len);
     nrf_write_reg(NRF_WRITE_REG|NRF_SETUP_AW, NRF_AW_5);
-  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_1Mbps);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_2Mbps);
   	nrf_write_reg(NRF_WRITE_REG|NRF_CONFIG,
         NRF_EN_ALL_IRQ | NRF_EN_CRC | NRF_CRC_2B | NRF_POWER_UP | NRF_PRIM_RX);
     //nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, 0x07);
@@ -184,8 +189,8 @@ void nrf_rx_mode_dual(const uint8_t* addr, uint8_t addr_len, uint8_t channel)
     nrf_write_reg(NRF_WRITE_REG|NRF_FEATURE , NRD_EN_DPL | NRF_EN_ACK_PAYLOAD);
     nrf_write_reg(NRF_WRITE_REG|NRF_DYNPD, NRF_DPL_P0 | NRF_DPL_P1| NRF_DPL_P2| NRF_DPL_P3| NRF_DPL_P4| NRF_DPL_P5);
     
-    nrf_write_reg(NRF_WRITE_REG|NRF_SETUP_AW, NRF_AW_5);
-  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_1Mbps);
+    nrf_write_reg(NRF_WRITE_REG|NRF_SETUP_AW, addr_len-2);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_2Mbps);
   	nrf_write_reg(NRF_WRITE_REG|NRF_CONFIG,
         NRF_EN_ALL_IRQ | NRF_EN_CRC | NRF_CRC_2B | NRF_POWER_UP | NRF_PRIM_RX);
     
@@ -201,7 +206,7 @@ void nrf_tx_mode_dual(const uint8_t* addr, uint8_t addr_len , uint8_t channel)
 	NRF_CE_DISABLE;
   	nrf_write_buf(NRF_WRITE_REG|NRF_TX_ADDR,addr,addr_len);//写TX节点地址 
   	nrf_write_buf(NRF_WRITE_REG|NRF_RX_ADDR_P0,addr,addr_len); //设置TX节点地址,主要为了使能ACK	  
-    nrf_write_reg(NRF_WRITE_REG|NRF_SETUP_AW, NRF_AW_5);
+    nrf_write_reg(NRF_WRITE_REG|NRF_SETUP_AW, addr_len-2 /*NRF_AW_5*/);
   	nrf_write_reg(NRF_WRITE_REG|NRF_EN_AA, NRF_ENAA_P0);
   	nrf_write_reg(NRF_WRITE_REG|NRF_EN_RXADDR, NRF_ERX_P0);
     
@@ -216,7 +221,7 @@ void nrf_tx_mode_dual(const uint8_t* addr, uint8_t addr_len , uint8_t channel)
   	nrf_write_reg(NRF_WRITE_REG|NRF_SETUP_RETR, NRF_ARD(500) | NRF_ARC(2));
 
   	nrf_write_reg(NRF_WRITE_REG|NRF_RF_CH, channel);
-  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_1Mbps);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_2Mbps);
   	nrf_write_reg(NRF_WRITE_REG|NRF_CONFIG, 
         NRF_EN_ALL_IRQ | NRF_EN_CRC | NRF_CRC_2B | NRF_POWER_UP | NRF_PRIM_TX );
 
@@ -225,6 +230,83 @@ void nrf_tx_mode_dual(const uint8_t* addr, uint8_t addr_len , uint8_t channel)
     NRF_CE_ENABLE;
 }
 
+
+void nrf_rx_mode_dyn(const uint8_t* addr, uint8_t addr_len, uint8_t channel)
+{
+	NRF_CE_DISABLE;
+  	nrf_write_buf(NRF_WRITE_REG|NRF_RX_ADDR_P0, addr,addr_len);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_EN_AA, NRF_ENAA_P0);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_EN_RXADDR, NRF_ERX_P0);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_CH,channel);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_RX_PW_P0, 16);
+    
+    nrf_write_reg(NRF_WRITE_REG|NRF_FEATURE , NRD_EN_DPL);
+    if(nrf_read_reg(NRF_FEATURE) == 0x00 && (nrf_read_reg(NRF_DYNPD) == 0x00)){
+        nrf_write_reg(NRF_ACTIVATE, 0x73);
+    }
+    nrf_write_reg(NRF_WRITE_REG|NRF_FEATURE , NRD_EN_DPL);
+    nrf_write_reg(NRF_WRITE_REG|NRF_DYNPD, NRF_DPL_P0 | NRF_DPL_P1| NRF_DPL_P2| NRF_DPL_P3| NRF_DPL_P4| NRF_DPL_P5);
+    
+    nrf_write_reg(NRF_WRITE_REG|NRF_SETUP_AW, addr_len-2);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_2Mbps);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_CONFIG,
+        NRF_EN_ALL_IRQ | NRF_EN_CRC | NRF_CRC_2B | NRF_POWER_UP | NRF_PRIM_RX);
+    
+    //nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, 0x07);
+  	//nrf_write_reg(NRF_WRITE_REG|NRF_CONFIG, 0x0f);
+    //nrf_write_reg(NRF_WRITE_REG|NRF_DYNPD, NRF_DPL_P0);
+    //nrf_write_reg(NRF_WRITE_REG|NRF_FEATURE, NRD_EN_DPL | NRF_EN_ACK_PAYLOAD);
+    NRF_CE_ENABLE;
+}
+
+void nrf_tx_mode_dyn(const uint8_t* addr, uint8_t addr_len , uint8_t channel)
+{
+	NRF_CE_DISABLE;
+  	nrf_write_buf(NRF_WRITE_REG|NRF_TX_ADDR,addr,addr_len);//写TX节点地址 
+  	nrf_write_buf(NRF_WRITE_REG|NRF_RX_ADDR_P0,addr,addr_len); //设置TX节点地址,主要为了使能ACK	  
+    nrf_write_reg(NRF_WRITE_REG|NRF_SETUP_AW, addr_len-2 /*NRF_AW_5*/);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_EN_AA, NRF_ENAA_P0);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_EN_RXADDR, NRF_ERX_P0);
+    
+    nrf_write_reg(NRF_WRITE_REG|NRF_FEATURE , NRD_EN_DPL);
+    if(nrf_read_reg(NRF_FEATURE) == 0x00 && (nrf_read_reg(NRF_DYNPD) == 0x00)){
+        nrf_write_reg(NRF_ACTIVATE, 0x73);
+    }
+    nrf_write_reg(NRF_WRITE_REG|NRF_FEATURE , NRD_EN_DPL);
+    nrf_write_reg(NRF_WRITE_REG|NRF_DYNPD, NRF_DPL_P0 | NRF_DPL_P1| NRF_DPL_P2| NRF_DPL_P3| NRF_DPL_P4| NRF_DPL_P5);
+    
+    
+  	nrf_write_reg(NRF_WRITE_REG|NRF_SETUP_RETR, NRF_ARD(500) | NRF_ARC(2));
+
+  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_CH, channel);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_RF_SETUP, NRF_PWR_0dBm | NRF_DR_2Mbps);
+  	nrf_write_reg(NRF_WRITE_REG|NRF_CONFIG, 
+        NRF_EN_ALL_IRQ | NRF_EN_CRC | NRF_CRC_2B | NRF_POWER_UP | NRF_PRIM_TX );
+
+
+
+    NRF_CE_ENABLE;
+}
+
+void nrf_enter_tx_mode(void)
+{
+    NRF_CE_DISABLE;
+    
+    nrf_write_reg(NRF_WRITE_REG|NRF_CONFIG, 
+        NRF_EN_ALL_IRQ | NRF_EN_CRC | NRF_CRC_2B | NRF_POWER_UP | NRF_PRIM_TX );
+    
+    NRF_CE_ENABLE;
+}
+
+void nrf_enter_rx_mode(void)
+{
+    NRF_CE_DISABLE;
+    
+    nrf_write_reg(NRF_WRITE_REG|NRF_CONFIG, 
+        NRF_EN_ALL_IRQ | NRF_EN_CRC | NRF_CRC_2B | NRF_POWER_UP | NRF_PRIM_RX );
+    
+    NRF_CE_ENABLE;
+}
 
 void nrf_irq_handler(void)
 {

@@ -165,7 +165,7 @@ void EXTI15_10_IRQHandler(void)
         /* Clear the  EXTI line 8 pending bit */
         EXTI_ClearITPendingBit(EXTI_Line10);
         // IRQ ready
-        nrf_irq_handler();
+        //nrf_irq_handler();
     }
 }
 

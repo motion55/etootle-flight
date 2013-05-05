@@ -39,6 +39,15 @@
 #define   LED9_OFF       IO_RESET(E,12)
 #define   LED10_OFF      IO_RESET(E,13)
 
+#define   LED3_ON       IO_SET(E,9)
+#define   LED4_ON       IO_SET(E,8)
+#define   LED5_ON       IO_SET(E,10)
+#define   LED6_ON       IO_SET(E,15)
+#define   LED7_ON       IO_SET(E,11)
+#define   LED8_ON       IO_SET(E,14)
+#define   LED9_ON       IO_SET(E,12)
+#define   LED10_ON      IO_SET(E,13)
+
 void setup_io_l3gd20(void);
 void setup_l3gd20_io_interrupt(void);
 void enable_l3gd20_interrupt(void);

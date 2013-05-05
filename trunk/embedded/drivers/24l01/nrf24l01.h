@@ -175,9 +175,15 @@ void nrf_tx_mode_no_aa(const uint8_t* addr, uint8_t addr_len, uint8_t channel);
 void nrf_tx_mode_dual(const uint8_t* addr, uint8_t addr_len, uint8_t channel);
 void nrf_rx_mode_dual(const uint8_t* addr, uint8_t addr_len, uint8_t channel);
 
+void nrf_tx_mode_dyn(const uint8_t* addr, uint8_t addr_len, uint8_t channel);
+void nrf_rx_mode_dyn(const uint8_t* addr, uint8_t addr_len, uint8_t channel);
+
 uint8_t nrf_get_status(void);
 uint8_t nrf_test_carrier(void);
 uint8_t nrf_rx_available(void);
+
+void nrf_enter_tx_mode(void);
+void nrf_enter_rx_mode(void);
 
 void nrf_irq_handler(void);
 void nrf_tx_done(uint8_t success);

@@ -16,8 +16,8 @@
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>1</x>
-     <y>1</y>
+     <x>0</x>
+     <y>0</y>
      <width>331</width>
      <height>261</height>
     </rect>
@@ -35,7 +35,7 @@
        <x>10</x>
        <y>10</y>
        <width>121</width>
-       <height>201</height>
+       <height>211</height>
       </rect>
      </property>
      <property name="title">
@@ -45,7 +45,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>160</y>
+        <y>150</y>
         <width>89</width>
         <height>23</height>
        </rect>
@@ -82,7 +82,7 @@
            <string>可自己填写。</string>
           </property>
           <property name="editable">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="currentIndex">
            <number>-1</number>
@@ -106,6 +106,19 @@
         </item>
        </layout>
       </widget>
+     </widget>
+     <widget class="QPushButton" name="serial_refresh">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>180</y>
+        <width>89</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>刷新串口</string>
+      </property>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_2">
@@ -162,6 +175,72 @@
        <string>显示接收的包</string>
       </property>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="usb">
+    <attribute name="title">
+     <string>USB</string>
+    </attribute>
+    <widget class="QComboBox" name="usbHid">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>89</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>可自己填写。</string>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+     <property name="duplicatesEnabled">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="usb_refresh">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>10</y>
+       <width>89</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>刷新USB</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="usb_openClose">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>10</y>
+       <width>89</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>打开USB</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="usb_path">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>291</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="file">

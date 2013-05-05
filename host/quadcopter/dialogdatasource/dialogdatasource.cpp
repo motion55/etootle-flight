@@ -21,6 +21,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QSettings>
+#include "qextserialport/qextserialenumerator.h"
 
 const char * DialogDataSource::SETTING_DATASOURCE_SERIAL_PORT       = "datasource/serial/port";
 const char * DialogDataSource::SETTING_DATASOURCE_SERIAL_BOUNDRATE  = "datasource/serial/boundrate";
@@ -40,6 +41,7 @@ DialogDataSource::DialogDataSource(QWidget *parent) :
     m_file_pause = false;
     m_serial = 0;
     m_serial_opening = false;
+    m_usb_opening = false;
     //
     m_serial_timer.setInterval(30);
     connect(&m_serial_timer,SIGNAL(timeout()),this,SLOT(every30ms()));
@@ -101,6 +103,10 @@ void DialogDataSource::every30ms()
     if(m_serial && m_serial->isReadable())
     {
         QByteArray buf = m_serial->readAll();
+        emit m_serialBinaryParser.onReceivedData(buf);
+    }
+    if(m_usb && m_usb->isReadable()){
+        QByteArray buf = m_usb->readAll();
         emit m_serialBinaryParser.onReceivedData(buf);
     }
 }
@@ -170,6 +176,8 @@ void DialogDataSource::initSerialSetting()
         ui->serial_port->addItem(str);
     }
 #endif
+    on_serial_refresh_clicked();
+    on_usb_refresh_clicked();
     //
     ui->serial_baudrate->clear();
     for(int i=0;i<(int)(sizeof(baudrateTable)/sizeof(ComSettingTable));i++)
@@ -238,7 +246,7 @@ void DialogDataSource::dataSorce_getSerialSetting(PortSettings & setting)
     setting.StopBits = (StopBitsType) ui->serial_stopbits->itemData(stopbits).toInt();
     //
     setting.FlowControl = FLOW_OFF;
-    setting.Timeout_Sec = 0;
+    //setting.Timeout_Sec = 0;
     setting.Timeout_Millisec = 20;
 }
 
@@ -270,6 +278,7 @@ void DialogDataSource::on_serial_openClose_clicked()
         ui->serial_openClose->setText(QString::fromUtf8("关闭串口"));
         ui->serial_setting->setEnabled(!m_serial_opening);
         ui->file->setEnabled(!m_serial_opening);
+        ui->usb->setEnabled(!m_serial_opening);
     }
     else
     {
@@ -284,6 +293,7 @@ void DialogDataSource::on_serial_openClose_clicked()
         ui->serial_openClose->setText(QString::fromUtf8("打开串口"));
         ui->serial_setting->setEnabled(!m_serial_opening);
         ui->file->setEnabled(!m_serial_opening);
+        ui->usb->setEnabled(!m_serial_opening);
     }
 }
 
@@ -373,6 +383,8 @@ void DialogDataSource::serial_send(const QByteArray &bytes)
 {
     if(m_serial != 0)
         emit m_serial->write(bytes);
+    if(m_usb != 0)
+        emit m_usb->writeData(0, bytes);
 }
 
 void DialogDataSource::on_cbPrintTransmitPacket_stateChanged(int arg1)
@@ -383,4 +395,71 @@ void DialogDataSource::on_cbPrintTransmitPacket_stateChanged(int arg1)
 void DialogDataSource::on_cbPrintReceivePacket_stateChanged(int arg1)
 {
     m_serialBinaryParser.needPrintReceivePacket(arg1);
+}
+
+void DialogDataSource::on_serial_refresh_clicked()
+{
+    ui->serial_port->clear();
+    QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
+    foreach(const QextPortInfo& info, ports){
+        ui->serial_port->addItem(info.portName);
+    }
+    ui->serial_port->setCurrentIndex(0);
+}
+
+void DialogDataSource::on_usb_openClose_clicked()
+{
+    if(!m_usb_opening)
+    {
+        m_usb_opening = true;
+        //
+        // 打开USB。
+        QString path = ui->usb_path->text();
+        m_usb = new QUsbHid();
+        m_usb->setPath(path);
+        if(!m_usb->open(QIODevice::ReadWrite))
+        {
+            delete m_usb;
+            m_usb = 0;
+            //
+            QMessageBox::warning(this,QString::fromUtf8("错误"),
+                                 QString::fromUtf8("打开USB%1失败！").arg(path));
+            return;
+        }
+        m_usb->flush();
+        connect(m_usb, SIGNAL(readyRead()), this, SLOT(every30ms()));
+        //
+        // 界面。
+        ui->usb_openClose->setText(QString::fromUtf8("关闭USB"));
+        ui->serial->setEnabled(!m_usb_opening);
+        ui->file->setEnabled(!m_usb_opening);
+    }
+    else
+    {
+        m_usb_opening = false;
+        //
+        m_usb->close();
+        delete m_usb;
+        m_usb = 0;
+        //
+        // 界面。
+        ui->usb_openClose->setText(QString::fromUtf8("打开USB"));
+        ui->serial->setEnabled(!m_usb_opening);
+        ui->file->setEnabled(!m_usb_opening);
+    }
+}
+
+void DialogDataSource::on_usb_refresh_clicked()
+{
+    ui->usbHid->clear();
+    QList<QUsbHidInfo> devs = QUsbHid::enumDevices(0x250,0x250);
+    foreach(const QUsbHidInfo& info, devs){
+        ui->usbHid->addItem(info.friendName, info.path);
+    }
+    ui->usbHid->setCurrentIndex(0);
+}
+
+void DialogDataSource::on_usbHid_currentIndexChanged(int index)
+{
+    ui->usb_path->setText( ui->usbHid->itemData(index).toString() );
 }

@@ -24,6 +24,7 @@
 #include <QLineEdit>
 #include <QTimer>
 #include "qextserialport/qextserialport.h"
+#include "qusbhid/qusbhid.h"
 #include "binaryparser.h"
 
 namespace Ui {
@@ -54,6 +55,14 @@ private slots:
 
     void on_cbPrintReceivePacket_stateChanged(int arg1);
 
+    void on_serial_refresh_clicked();
+
+    void on_usb_openClose_clicked();
+
+    void on_usb_refresh_clicked();
+
+    void on_usbHid_currentIndexChanged(int index);
+
 private:
     void initFileSetting();
     void initSerialSetting();
@@ -76,7 +85,9 @@ private:
     bool m_file_pause;   // 运行状态，读文件是否被暂停。
     TextFileParser m_textFileParser; // 文本文件解析器。
     QextSerialPort * m_serial;
+    QUsbHid * m_usb;
     bool m_serial_opening;
+    bool m_usb_opening;
     BinaryParser m_serialBinaryParser;
     QTimer m_serial_timer;
 };

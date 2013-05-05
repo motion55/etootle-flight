@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogScene</class>
+ <widget class="QDialog" name="DialogScene">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>场景</string>
+  </property>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>601</width>
+     <height>806</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="leftMargin">
+       <number>3</number>
+      </property>
+      <property name="topMargin">
+       <number>3</number>
+      </property>
+      <property name="rightMargin">
+       <number>3</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="fullscreen">
+        <property name="text">
+         <string>全屏</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="resetView">
+        <property name="text">
+         <string>重置视角</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <widget class="QCheckBox" name="autoGetAttitude">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>5</y>
+           <width>70</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>获取姿态</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>25</y>
+           <width>54</width>
+           <height>12</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>周期(ms):</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="autoGetAttitude_period">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>40</y>
+           <width>31</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="inputMask">
+          <string>9999; </string>
+         </property>
+         <property name="text">
+          <string>50</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_4">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <widget class="QCheckBox" name="autoGetPosition">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>5</y>
+           <width>70</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>获取位置</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_3">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>25</y>
+           <width>54</width>
+           <height>12</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>周期(ms):</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="autoGetPosition_period">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>40</y>
+           <width>31</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="inputMask">
+          <string>9999; </string>
+         </property>
+         <property name="text">
+          <string>50</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="displayWall">
+        <property name="text">
+         <string>显示坐标墙</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="displayWorldAxes">
+        <property name="text">
+         <string>显示地理坐标</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="displayModel">
+        <property name="text">
+         <string>显示模型</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="displayModelAxes">
+        <property name="text">
+         <string>显示机体坐标</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>姿态角顺序</string>
+        </property>
+        <widget class="QComboBox" name="comboBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>69</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>ZXY</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="GLWidget" name="scene" native="true">
+      <property name="cursor">
+       <cursorShape>OpenHandCursor</cursorShape>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GLWidget</class>
+   <extends>QWidget</extends>
+   <header>dialogscene/glwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

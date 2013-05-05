@@ -42,7 +42,7 @@
 extern __IO uint8_t PrevXferComplete;
 __IO uint32_t USBConnectTimeOut = 100;
 
-const uint8_t nrf_addr[] = RX_ADDR0;
+const uint8_t nrf_addr[] = {0xE7, 0xE7, 0xE7, 0xE7, 0xE7};// RX_ADDR0;
 
   DECLARE_RING_BUFFER(usb_rx, 64, 8)
   DECLARE_RING_BUFFER(nrf_rx, 64, 8)
@@ -54,6 +54,18 @@ const uint8_t nrf_addr[] = RX_ADDR0;
 /* callback functions */
 void nrf_tx_done(uint8_t success)
 {
+    nrf_enter_rx_mode();
+    LED7_OFF;
+    LED4_OFF;
+    LED5_OFF;
+    LED6_OFF;
+    if(NRF_TX_SUCCESS == success){
+        LED4_ON;
+    }else if(NRF_TX_FAIL == success){
+        LED5_ON;
+    }else if(NRF_ACK_SUCCESS == success){
+        LED6_ON;
+    }
 }
 
 void nrf_on_rx_data(const void* data, uint32_t len, uint8_t channel)
@@ -90,7 +102,7 @@ int main(void)
     
     nrf_init();
     nrf_detect();
-    nrf_rx_mode_dual(nrf_addr, 5, 40);
+    nrf_tx_mode_dyn(nrf_addr, 4, 0);
     {
         uint8_t status = nrf_read_reg(NRF_STATUS);
         nrf_write_reg(NRF_FLUSH_RX, 0xff);
@@ -113,19 +125,29 @@ int main(void)
         if(ring_buf_pop(usb_rx, data, 64)){
             if(data[0] == 0x55 && data[1] == 0xaa && data[2]<32){
                 // process usb data
-                nrf_tx_packet(data+3, data[2]);
-                LED3_TOGGLE;
+                nrf_enter_tx_mode();
+                LED7_ON;
+                nrf_tx_packet_no_wait(data+3, data[2]);
+                LED8_TOGGLE;
+            }else{
+                LED10_TOGGLE;
+                usb_send_data(data,64);
             }
         }
         if(ring_buf_pop(nrf_rx, data, 64)){
             usb_send_data(data,64);
-            LED4_TOGGLE;
+            LED9_TOGGLE;
         }
         led_status++;
-        if(led_status > 0x8000){
-            LED7_TOGGLE;
-            LED8_TOGGLE;
-            LED9_TOGGLE;
+        if(led_status > 0x1000){
+            uint8_t buf[64] = { 0x00, 0x1b, 0x01, 0xcf, 0xa8 };
+            LED3_TOGGLE;
+            led_status = 0;
+            //nrf_enter_tx_mode();
+            //nrf_tx_packet_no_wait(buf, 5);
+        }
+        if(!NRF_IRQ){
+            nrf_irq_handler();
         }
     }
 }

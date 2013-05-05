@@ -42,8 +42,7 @@ SOURCES += main.cpp\
     dialogdatasource/binaryparser.cpp \
     dialogdatasource/qextserialport/win_qextserialport.cpp \
     dialogdatasource/qextserialport/qextserialport.cpp \
-    dialogdatasource/qextserialport/qextserialbase.cpp \
-    dialogdatasource/qextserialport/posix_qextserialport.cpp \
+    dialogdatasource/qextserialport/qextserialenumerator_win.cpp\
     dialogstatus/dialogstatus.cpp \
     dialogcontrol/dialogcontrol.cpp \
     dialogcontrol/controllockattitudewidget.cpp \
@@ -82,8 +81,7 @@ HEADERS  += mainwindow.h \
     dialogdatasource/binaryparser.h \
     dialogdatasource/qextserialport/win_qextserialport.h \
     dialogdatasource/qextserialport/qextserialport.h \
-    dialogdatasource/qextserialport/qextserialbase.h \
-    dialogdatasource/qextserialport/posix_qextserialport.h \
+    dialogdatasource/qextserialport/qextserialenumerator.h\
     dialogstatus/dialogstatus.h \
     dialogcontrol/dialogcontrol.h \
     dialogcontrol/controllockattitudewidget.h \
@@ -103,6 +101,16 @@ FORMS    += mainwindow.ui \
     dialogbootloader/dialogbootloader.ui \
     dialogparameter/dialogparameter.ui \
     dialogcontrol/dialogcameracontrol.ui
+
+win32 {
+    SOURCES += dialogdatasource/qusbhid/qusbhid.cpp \
+        dialogdatasource/qusbhid/qusbhidenumerator.cpp
+    HEADERS += dialogdatasource/qusbhid/qusbhidenumerator.h \
+        dialogdatasource/qusbhid/qusbhid.h
+    DEFINES += WINVER=0x0501 # needed for mingw to pull in appropriate dbt business...probably a better way to do this
+    LIBS += -lsetupapi \
+        -lhid
+}
 
 OTHER_FILES += \
     protocol.txt

@@ -4,3 +4,4 @@ pc          上位机相关代码
 android     安卓系统相关代码
 embedded    下位机相关代码
 doc         资料文档
+host        上位机程序

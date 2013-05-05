@@ -1,0 +1,99 @@
+协议版本：0（调试）
+帧类型：
+    0x01 => 返回四元数姿态，参数：wxyz，4个32位浮点数。
+    0x02 => 加速度计、罗盘校正，参数：xyz，3个浮点数。
+    0x03 => 周期时间标记，没有参数。
+    0x04 => 返回位置，参数：xyz，3个32位浮点数。
+    0x05 => 设定目标姿态，参数：wxyz，4个32位浮点数。
+    0x06 => 获取四元数姿态，无参数。
+    0x07 => ping发送、心跳信号发送。
+    0x08 => ping回应、心跳信号回应。
+    0x09 => 获取位置，无参数。
+    0x0A => 获取姿态角，无参数。
+    0x0B => 返回姿态角，参数：[yaw(z),pitch(y),roll(x)]，
+            弧度，3个32位浮点数。
+    0x0C => 动作-锁定姿态-当前姿态设为目标姿态。
+    0x0D => 动作-锁定姿态-把当前姿态旋转一段时间然后恢复。
+            参数:wxyzt，wxyz为4个32位浮点数，低字节在前，
+            是世界坐标系的旋转。
+            t为16位无符号数，低字节在前，单位：ms。
+    0x0E => 动作-锁定姿态-设置油门基础值，
+            参数：throttle，1个32浮点数，低字节在前，[0,1]。
+    0x0F => 设置参数，参数：which+value。
+            value是32位低字节在前的浮点数。
+            which为8位无符号数。
+            which=0x01，X轴P参数。
+            which=0x02，X轴I参数。
+            which=0x03，X轴D参数。
+            which=0x04，Y轴P参数。
+            which=0x05，Y轴I参数。
+            which=0x06，Y轴D参数。
+            which=0x07，Z轴P参数。
+            which=0x08，Z轴I参数。
+            which=0x09，Z轴D参数。
+    0x10 => 获取参数，参数：which，同上。
+    0x11 => 返回参数，参数：which+value，同上。
+    0x12 => 设置控制模式。参数：mode，1字节。
+            mode=0x01，锁定油门模式。
+            mode=0x02，锁定姿态模式。
+            mode=0x03，停机模式。
+    0x13 => 动作-锁定油门-设置油门。
+            参数：th[4]，四个电机的油门值，32位浮点数，[0,1]。
+    0x14 => 获取xyz向量，参数：type，8位无符号整数，取值如下。
+            type=0x01，加速度计原始值，
+            type=0x02，加速度计校正值，
+            type=0x03，陀螺仪原始值，
+            type=0x04，陀螺仪校正值，
+            type=0x05，罗盘原始值，
+            type=0x06，罗盘校正值，
+    0x15 => 返回xyz向量，参数：type+xyz。
+            type为向量类型，取值同上；
+            xyz为向量，32位浮点数，低字节在前。
+    0x16 => 示波器，参数channel+value[]。
+            chanel：uint8_t，通道号。
+            value[]：通道值，对应通道号由channel开始递增。
+    0x17 => 锁定姿态-设置目标姿态。
+            参数:wxyzt，wxyz为4个32位浮点数，低字节在前，
+            是世界坐标系的旋转。
+    0x18 => 获取状态。参数：which[]，uint8_t数组，
+            表示需要获取的参数，取值如下：
+            which[i]=0x01，电池电压。
+            which[i]=0x02，当前电机油门值。
+    0x19 => 返回状态。参数：which+value，which指定状态。
+            value为状态值，根据不同类型不同。
+            which[i]=0x01，电池电压，value为float。
+            which[i]=0x02，当前电机油门值，value为float[4]。
+    0x1A => 返回消息。参数：char msg[]，UTF-8字符串，不带结束符'\0'。
+    0x1B => Bootloader命令，参数：cmd[+param]。
+            cmd为命令代码，uint8_t。param为可选参数，因命令代码而异。
+            cmd=0x01，进入Bootloader模式，param空。
+            cmd=0x02，开始刷app，param空。
+            cmd=0x03，设置app长度和crc，param={uint32_t len,uint32_t crc}。
+            cmd=0x04，写app，param={uint16_t blockIndex,uint32_t data[]}。
+            cmd=0x05，查询有哪些未写的块，param空。
+            cmd=0x06，进入app。
+    0x1C => Bootloader状态。参数：status[+param]。
+            status为状态码，uint8_t。param为可选参数，因状态码而异。
+            status=0x01，Bootloader等待命令状态，param空。
+            status=0x02，准备好刷app，param空。
+            status=0x03，正在写app，param={uint32_t 已写入的字数}。
+            status=0x04，返回有哪些未写的块，param=[{uint16_t index,uint16_t length},...]。
+            status=0x05，写入完成，crc检验失败，param空。
+            status=0x06，刷app成功，param空。
+            status=0x07，已经进入app。
+    0x1D => 操作参数模块。参数：{code:8 [+ 可选参数]}。
+            code=0x11，读RAM，可选参数={pos:8 + len:8}。
+            code=0x12，返回RAM的值，可选参数={pos:8 + 值数组32*n}。
+            code=0x13，写入RAM，可选参数={pos:8 + 值数组32*n}。
+            code=0x21，读Flash，可选参数={pos:8 + len:8}。
+            code=0x22，返回Flash的值，可选参数={pos:8 + 值数组32*n}。
+            code=0x23，写入Flash，没有可选参数。
+            code=0x24，返回状态：Flash中的值与RAM中的一样。
+            code=0x25，重置Flash里的参数为默认值，没有可选参数。
+            pos：第一个值的偏移，以字（4字节）为单位，从1开始。
+            len也是以字为单位。
+    0x1E => 控制-锁定姿态，参数：{code:8 [+ param]}
+            code=0x01，起飞前准备，param={空}。包括航偏角校正等。
+            code=0x02，已准备好起飞，param={空}。
+            code=0x03，未准备好起飞，param={空}。
+            code=0x04，设定控制参数，param={float twxyz[4]}，t为基础油门，wxyz为控制旋转。

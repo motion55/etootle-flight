@@ -41,6 +41,7 @@ DialogDataSource::DialogDataSource(QWidget *parent) :
     m_file_pause = false;
     m_serial = 0;
     m_serial_opening = false;
+    m_usb = 0;
     m_usb_opening = false;
     //
     m_serial_timer.setInterval(30);

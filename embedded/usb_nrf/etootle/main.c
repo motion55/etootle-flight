@@ -108,7 +108,6 @@ int main(void)
     }
     
     //pwm_input_init();
-    
     USB_Init();
     
     // wait usb ready
@@ -139,6 +138,7 @@ int main(void)
         if(led_status > 0x1000){
             uint8_t buf[64] = { 0x00, 0x1b, 0x01, 0xcf, 0xa8 };
             //LED3_TOGGLE;
+            LED1_TOGGLE;
             led_status = 0;
             //nrf_enter_tx_mode();
             //nrf_tx_packet_no_wait(buf, 5);

@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -177,7 +177,15 @@ int32_t engine_onCmd(const uint8_t *param,int32_t length)
         // 请求剩余未写的块。
         case PROTOCOL_BOOTLOADER_CMD_QUEST_REMAIN_BLOCK :
         {
-            engine_reportStatus(PROTOCOL_BOOTLOADER_STATUS_BLOCK_REMAIN);
+            // sometimes, the app status will fail send the to host
+            // remain block request will always here
+            if(engine_status == ENGINE_STATUS_WRITE_APP_SUCCEED){
+                engine_reportStatus(PROTOCOL_BOOTLOADER_STATUS_WRITE_APP_SUCCEED);
+            }else if(engine_status == ENGINE_STATUS_WRITING_APP_COMPLETE_CRC_ERROR){
+                engine_reportStatus(PROTOCOL_BOOTLOADER_STATUS_APP_CRC_ERROR);
+            }else{
+                engine_reportStatus(PROTOCOL_BOOTLOADER_STATUS_BLOCK_REMAIN);
+            }
         }
         break;
         //

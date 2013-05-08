@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -211,7 +211,7 @@ int32_t refresher_getRemainBlock(uint8_t * buffer,int32_t bufferLength)
         //
         // 如果refresher_checkCompleteStartIndex到达末尾，要回到前面。
         if(refresher_checkCompleteStartIndex >= refresher_appSize_block)
-            refresher_appSize_block = 0;
+            refresher_checkCompleteStartIndex = 0;
         //
         // 保存index和len到buffer。
         buffer[curLen ++] = ((uint8_t *)&index)[0];

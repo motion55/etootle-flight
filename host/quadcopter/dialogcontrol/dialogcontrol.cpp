@@ -30,6 +30,7 @@ DialogControl::DialogControl(QWidget *parent) :
     m_currentMode(HALT),
     m_baseThrottle(0),
     m_dialogCameraControl(this),
+    m_dialogTcpServer(this),
     m_lockAttitudeCanSend(true),
     m_lockAttitudeNeedSend(false)
 {
@@ -46,6 +47,8 @@ DialogControl::DialogControl(QWidget *parent) :
             this,SLOT(lockAttitude_onControlChanged()));
     connect(&m_lockAttitudeTimer,SIGNAL(timeout()),
             this,SLOT(onLockAttitudeTimer()));
+    connect(&m_dialogTcpServer, SIGNAL(controlDataReady(ControlData)),
+            this,SLOT(onControlData(ControlData)));
     //
 }
 
@@ -307,6 +310,30 @@ void DialogControl::onLockAttitude(const QByteArray &param)
 {
 }
 
+void DialogControl::onControlData(const ControlData& data)
+{
+    short thro = 0;
+    short x,y;
+    if(ui->lockAttitude_cbPhoneControl_leftThro->isChecked()){
+        thro = data.y1;
+        x = data.x2;
+        y = data.y2;
+    }else{
+        thro = data.y2;
+        x = data.x1;
+        y = data.y1;
+    }
+    if(ui->lockAttitude_cbPhoneControl_ABSThro->isChecked()){
+        thro = -thro;
+        if(thro<0) thro = 0;
+        else thro = thro/2;
+        ui->lockAttitude_throttleBase->setValue(thro/10);
+    }else{
+        lockAttitude_changeThrottle(-thro/500);
+    }
+    ui->lockAttitude_widget->update_pos(x/20,-y/20);
+}
+
 void DialogControl::on_btGetReady_clicked()
 {
     QByteArray send;
@@ -333,4 +360,16 @@ void DialogControl::onLockAttitudeTimer()
     }
     m_lockAttitudeCanSend = true;
     m_lockAttitudeNeedSend = false;
+}
+
+void DialogControl::on_lockAttitude_btPhoneSetting_clicked()
+{
+    m_dialogTcpServer.showNormal();
+    m_dialogTcpServer.raise();
+}
+
+void DialogControl::on_lockAttitude_cbPhoneControl_clicked(bool checked)
+{
+    ui->lockAttitude_btPhoneSetting->setEnabled(checked);
+    ui->lockAttitude_cbPhoneControl_leftThro->setEnabled(checked);
 }

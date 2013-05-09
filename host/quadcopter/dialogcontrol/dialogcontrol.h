@@ -27,6 +27,7 @@
 #include <stdint.h>
 #include "quaternion.h"
 #include "dialogcameracontrol.h"
+#include "dialogtcpserver.h"
 
 namespace Ui {
 class DialogControl;
@@ -48,6 +49,7 @@ signals:
 
 public slots:
     void onLockAttitude(const QByteArray & param);
+    void onControlData(const ControlData& data);
 
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
@@ -72,6 +74,10 @@ private slots:
     void onLockAttitudeTimer(void);
     void lockAttitude_onControlChanged(void);
 
+    void on_lockAttitude_btPhoneSetting_clicked();
+
+    void on_lockAttitude_cbPhoneControl_clicked(bool checked);
+
 private:
     void lockAttitude_changeThrottle(int delta);
     void lockThrottle_changed(int val);
@@ -91,6 +97,8 @@ private:
     QTimer m_heartbeatTimer;
     float m_baseThrottle;
     DialogCameraControl m_dialogCameraControl;
+    DialogTcpServer m_dialogTcpServer;
+
     QTimer m_lockAttitudeTimer;
     bool m_lockAttitudeCanSend;
     bool m_lockAttitudeNeedSend;

@@ -50,7 +50,8 @@ SOURCES += main.cpp\
     dialogbootloader/dialogbootloader.cpp \
     dialogbootloader/filereader.cpp \
     dialogparameter/dialogparameter.cpp \
-    dialogcontrol/dialogcameracontrol.cpp
+    dialogcontrol/dialogcameracontrol.cpp \
+    dialogcontrol/dialogtcpserver.cpp
 
 HEADERS  += mainwindow.h \
     globject/vector.h \
@@ -89,7 +90,8 @@ HEADERS  += mainwindow.h \
     dialogbootloader/dialogbootloader.h \
     dialogbootloader/filereader.h \
     dialogparameter/dialogparameter.h \
-    dialogcontrol/dialogcameracontrol.h
+    dialogcontrol/dialogcameracontrol.h \
+    dialogcontrol/dialogtcpserver.h
 
 FORMS    += mainwindow.ui \
     dialogcalibration/dialogcalibration.ui \
@@ -100,7 +102,8 @@ FORMS    += mainwindow.ui \
     dialogmessage/dialogmessage.ui \
     dialogbootloader/dialogbootloader.ui \
     dialogparameter/dialogparameter.ui \
-    dialogcontrol/dialogcameracontrol.ui
+    dialogcontrol/dialogcameracontrol.ui \
+    dialogcontrol/dialogtcpserver.ui
 
 win32 {
     SOURCES += dialogdatasource/qusbhid/qusbhid.cpp \

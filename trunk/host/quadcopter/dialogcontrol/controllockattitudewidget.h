@@ -31,6 +31,7 @@ public:
     void setHorizontalSensitivity(float sen);
     void reset(void);
     const Quaternion & getControl(void) {return m_control;}
+    void update_pos(int x, int y);
 
 signals:
     void controlChanged(void);

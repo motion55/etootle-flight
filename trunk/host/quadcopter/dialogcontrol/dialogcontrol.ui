@@ -47,6 +47,9 @@
         <property name="text">
          <string>心跳信号</string>
         </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -470,6 +473,64 @@
      </property>
      <property name="text">
       <string>摄像头设置</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="lockAttitude_cbPhoneControl">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>130</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>手机控制</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="lockAttitude_btPhoneSetting">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>150</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>手机设置</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="lockAttitude_cbPhoneControl_leftThro">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>180</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>左手油门</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="lockAttitude_cbPhoneControl_ABSThro">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>200</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>绝对油门</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>

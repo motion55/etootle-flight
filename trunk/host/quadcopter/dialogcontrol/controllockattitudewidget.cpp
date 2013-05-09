@@ -84,6 +84,14 @@ void ControlLockAttitudeWidget::refreshControl()
     emit controlChanged();
 }
 
+void ControlLockAttitudeWidget::update_pos(int x, int y)
+{
+    m_posX = x;
+    m_posY = y;
+    refreshControl();
+    update();
+}
+
 void ControlLockAttitudeWidget::mouseMoveEvent(QMouseEvent *event)
 {
     int dx = event->x() - m_lastPos.x();

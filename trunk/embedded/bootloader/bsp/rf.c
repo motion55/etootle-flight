@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -36,6 +36,7 @@
     #define RF_CMD_RWR_MASK 0x1F/*0b00011111*/  /* 寄存器地址掩码，0bcccaaaaa */
 #define RF_CMD_R_RX_PAYLOAD 0x61/*0b01100001*/  /* 获取数据。 */
 #define RF_CMD_W_TX_PAYLOAD 0xA0/*0b10100000*/  /* 推送数据。 */
+#define RF_CMD_W_ACK_PAYLOAD 0xA8/*0b10100000*/  /* 推送ACK数据。 */
 #define RF_CMD_FLUSH_TX     0xE1/*0b11100001*/  /* 清空发送缓存。 */
 #define RF_CMD_FLUSH_RX     0xE2/*0b11100010*/  /* 清空接收缓存。 */
 #define RF_CMD_R_RX_PL_WID  0x60/*0b01100000*/  /* 获取接收到的数据的长度。 */
@@ -98,7 +99,8 @@
     #define RF_REG_DYNPD_DEFAULT RF_REG_DYNPD_DPL_P0 /* 默认。 */
 #define RF_REG_FEATURE 0x1D
     #define RF_REG_FEATURE_EN_DPL   _BV(2) /* 允许动态数据长度。 */
-    #define RF_REG_FEATURE_DEFAULT RF_REG_FEATURE_EN_DPL /* 默认。 */
+    #define RF_REG_FEATURE_EN_ACKPL _BV(1) /* 允许ACK数据。 */
+    #define RF_REG_FEATURE_DEFAULT (RF_REG_FEATURE_EN_DPL | RF_REG_FEATURE_EN_ACKPL)/* 默认。 */
 #define RF_REG_RX_ADDR_P0 0x0A /* 接收的地址 */
 #define RF_REG_TX_ADDR    0x10 /* 发送目的地址 */
 #define RF_REG_RX_PW_P0   0x11 /* 0接收通道收到的数据的长度。 */
@@ -167,7 +169,7 @@ int32_t rf_transmit(const uint8_t * data,uint32_t len)
         return 1;
     //
     rf_hal_ceLow();
-    rf_writeRegester(RF_REG_CONFIG,RF_REG_CONFIG_DEFAULT_T);
+    //rf_writeRegester(RF_REG_CONFIG,RF_REG_CONFIG_DEFAULT_T);
     rf_writeData(data,len);
     rf_hal_ceHigh();
     //
@@ -177,7 +179,7 @@ int32_t rf_transmit(const uint8_t * data,uint32_t len)
 void rf_startReceive(void)
 {
     rf_hal_ceLow();
-    rf_writeRegester(RF_REG_CONFIG,RF_REG_CONFIG_DEFAULT_R);
+    //rf_writeRegester(RF_REG_CONFIG,RF_REG_CONFIG_DEFAULT_R);
     rf_hal_ceHigh();
 }
 
@@ -288,7 +290,8 @@ void rf_writeData(const uint8_t * data,uint8_t len)
 {
     rf_hal_spiBegin();
     //
-    rf_hal_spiSwap(RF_CMD_W_TX_PAYLOAD);
+    //rf_hal_spiSwap(RF_CMD_W_TX_PAYLOAD);
+    rf_hal_spiSwap(RF_CMD_W_ACK_PAYLOAD);
     for(uint8_t i=0;i<len;i++)
         rf_hal_spiSwap(data[i]);
     //

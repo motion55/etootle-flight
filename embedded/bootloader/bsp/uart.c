@@ -217,7 +217,7 @@ uint8_t uart1_send_data(const void* p, uint32_t len)
         //DMA_Cmd(DMA1_Channel4, ENABLE);
         DMA1_Channel4->CCR |= DMA_CCR1_EN;
     }
-    return 1;
+    return 0;
 }
 
 static void uart_data_ready(const void* pData, uint32_t len, void* context)
@@ -240,6 +240,6 @@ uint32_t uart_transmit(const uint8_t * data,uint32_t len)
 {
     uint8_t buf[64];
     len = uart_pack_data(&usart1_process, data, len, buf, 64);
-    uart1_send_data(buf, len);
+    return uart1_send_data(buf, len);
 }
 

@@ -68,7 +68,7 @@ void transmit_checkEvent(void)
     // 发送数据，并推进尾索引。
     int32_t rs = rf_transmit(transmit_packet[transmit_tail],
             transmit_length[transmit_tail]);
-    rs |= uart_transmit(
+    rs &= uart_transmit(
         transmit_packet[transmit_tail],
             transmit_length[transmit_tail]);
     if(rs)

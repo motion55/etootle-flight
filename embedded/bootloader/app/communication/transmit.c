@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -21,6 +21,7 @@
 // js200300953
 
 #include <bsp/rf.h>
+#include <bsp/uart.h>
 #include <app/math/interface.h>
 #include "protocol.h"
 #include "transmit.h"
@@ -66,6 +67,9 @@ void transmit_checkEvent(void)
     //
     // 发送数据，并推进尾索引。
     int32_t rs = rf_transmit(transmit_packet[transmit_tail],
+            transmit_length[transmit_tail]);
+    rs |= uart_transmit(
+        transmit_packet[transmit_tail],
             transmit_length[transmit_tail]);
     if(rs)
         return;

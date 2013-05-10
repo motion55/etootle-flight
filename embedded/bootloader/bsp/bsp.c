@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -25,6 +25,7 @@
 #include "led.h"
 #include "time.h"
 #include "rf.h"
+#include "uart.h"
 
 void bsp_init(void)
 {
@@ -53,6 +54,7 @@ void bsp_init(void)
     if(rs != 0)
         while(1);
     rf_startReceive();
+    uart1_init(115200);
 }
 
 void assert_failed(uint8_t* file, uint32_t line)

@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -21,6 +21,7 @@
 // js200300953
 
 #include "bsp/rf.h"
+#include "bsp/uart.h"
 #include "bsp/led.h"
 #include "app/math/interface.h"
 #include "receive.h"
@@ -34,6 +35,7 @@ void receive_init(void)
 void receive_checkEvent(void)
 {
     rf_checkEvent();
+    uart_checkEvent();
 }
 
 void rf_handleReceivedData(const uint8_t * packet,int32_t length)

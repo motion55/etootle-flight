@@ -1,6 +1,5 @@
 #include "stdint.h"
 #include "ring_buffer.h"
-#include "bsp.h"
 #include "string.h"
 
 #define ring_buffer_memcpy    memcpy

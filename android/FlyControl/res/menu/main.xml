@@ -1,0 +1,67 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_view_settings"
+        android:orderInCategory="100"
+        android:title="@string/view_setting" 
+        android:alphabeticShortcut="@string/view_setting" 
+        android:icon="@android:drawable/ic_menu_preferences">
+    </item>
+    
+    <item
+        android:id="@+id/action_axis_settings"
+        android:orderInCategory="100"
+        android:title="@string/axis_setting" 
+        android:alphabeticShortcut="@string/axis_setting" 
+        android:icon="@android:drawable/ic_menu_preferences">
+    </item>
+    
+    <item
+        android:id="@+id/action_net_settings"
+        android:orderInCategory="100"
+        android:title="@string/net_setting" 
+        android:alphabeticShortcut="@string/net_setting" 
+        android:icon="@android:drawable/ic_menu_preferences">
+    </item>
+    
+    <item
+        android:id="@+id/action_blue_settings"
+        android:orderInCategory="100"
+        android:title="@string/blue_setting" 
+        android:alphabeticShortcut="@string/blue_setting" 
+        android:icon="@android:drawable/ic_menu_preferences">
+    </item>
+    
+    <item
+        android:id="@+id/action_button_settings"
+        android:orderInCategory="100"
+        android:title="@string/button_setting" 
+        android:alphabeticShortcut="@string/button_setting" 
+        android:icon="@android:drawable/ic_menu_preferences">
+    </item>
+
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="100"
+        android:title="@string/menu_help" 
+        android:alphabeticShortcut="@string/menu_help" 
+        android:icon="@android:drawable/ic_dialog_info">
+    </item>
+    
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:title="@string/menu_about" 
+        android:alphabeticShortcut="@string/menu_about" 
+        android:icon="@android:drawable/ic_dialog_info">
+    </item>
+    
+    <item
+        android:id="@+id/action_quit"
+        android:orderInCategory="100"
+        android:title="@string/quit" 
+        android:alphabeticShortcut="@string/quit"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel">
+    </item>
+
+</menu>

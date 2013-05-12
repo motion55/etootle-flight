@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">飞控模拟器</string>
+    <string name="action_settings">设置</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="fps">帧率</string>
+    <string name="axis_format">(%1$.2f, %2$.2f)</string>
+    <string name="camera_width">镜头宽度:</string>
+    <string name="camera_height">镜头高度:</string>
+    <string name="text_info">显示文本信息</string>
+    <string name="ctrl_v_pos">控件位置:</string>
+    <string name="update_freq">数据频率:</string>
+    <string name="lock_attitude">锁定油门控制</string>
+    <string name="left_throttle">左手油门</string>
+    <string name="attitude_sensitivity">灵敏度:</string>
+    <string name="param_setting">参数设置</string>
+    <string name="quit">退出</string>
+    <string name="view_setting">显示设置</string>
+    <string name="net_setting">网络设置</string>
+    <string name="net_connect_fail">网络连接失败!</string>
+    <string name="ip_address">IP地址:</string>
+    <string name="ip_port">端口:</string>
+    <string name="conenct_to_server">连接服务器</string>
+    <string name="button_setting">按钮设置</string>
+    <string name="button">按钮</string>
+    <string name="btn_enable">启用</string>
+    <string name="btn_x">X轴位置</string>
+    <string name="btn_y">Y轴位置</string>
+    <string name="btn_name">名字</string>
+    <string name="btn_adj_pos">调整按钮位置</string>
+    <string name="btn_stop">停止</string>
+    <string name="btn_ready">准备</string>
+    <string name="axis_left_x">左摇杆X</string>
+    <string name="axis_left_y">左摇杆Y</string>
+    <string name="axis_right_x">右摇杆X</string>
+    <string name="axis_right_y">右摇杆Y</string>
+    <string name="axis_scale">比例</string>
+    <string name="axis_offset">偏置</string>
+    <string name="axis_name">摇杆名</string>
+    <string name="axis_setting">摇杆设置</string>
+    <string name="blue_setting">蓝牙设置</string>
+    <string name="blue_address">蓝牙MAC地址</string>
+    <string name="blue_name">设备名称</string>
+    <string name="blue_connect">连接</string>
+    <string name="blue_not_valid">蓝牙不可用!</string>
+    <string name="blue_search">扫描</string>
+    <string name="blue_paired_device">已配对设备</string>
+    <string name="blue_new_device">新设备</string>
+    <string name="blue_pair">配对</string>
+    <string name="blue_no_device_paired">没有已配对设备!</string>
+    <string name="blue_no_device_found">没有发现设备!</string>
+    <string name="blue_connect_fail">蓝牙连接失败!</string>
+    <string name="touch_both">支持多点触摸,摇杆可以同时工作!</string>
+    <string name="touch_single">支持多点触摸, 但是有问题.\n\n摇杆放在不同的纵坐标中.</string>
+	<string name="touch_none">不支持多点触摸!\n\n(使用单点模式)\n\n摇杆放在不同的纵坐标中.</string>
+	<string name="menu_about">关于</string>
+	<string name="about_flycontrol">关于 飞控模拟器</string>
+	
+	<string name="info_verion">版本: </string>
+	
+	<string name="menu_help">帮助</string>
+</resources>

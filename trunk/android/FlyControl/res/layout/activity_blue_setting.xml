@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="none"
+    android:layout_weight="1">
+    <LinearLayout android:id="@+id/layoutAllBlueDevices"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+    
+    
+    <TextView android:id="@+id/textPairedBlueDevices"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/blue_paired_device" />
+    
+    <LinearLayout
+        android:id="@+id/layoutPairedBlueDevices"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+    </LinearLayout>
+    
+    <TextView android:id="@+id/textNewBlueDevices"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/blue_new_device" />
+    
+    <LinearLayout android:id="@+id/layoutNewBlueDevices"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/textViewBlueMac"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.5"
+        android:text="@string/blue_address" />
+
+    <EditText
+        android:id="@+id/editBlueMac"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:ems="10"
+        android:inputType="text" >
+        <requestFocus />
+    </EditText>
+    <Button
+        android:id="@+id/btnBlueSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.5"
+        android:text="@string/blue_search" />
+    </LinearLayout>
+    
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    <CheckBox
+        android:id="@+id/checkConnectBlue"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/blue_connect" />
+    
+    <Button
+        android:id="@+id/blue_setting_pair"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/blue_pair" />
+    
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <Button
+        android:id="@+id/blue_setting_ok"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@android:string/ok" />
+
+    <Button
+        android:id="@+id/blue_setting_cancel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@android:string/cancel" />
+    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources >
+
+    <string name="app_name">FlyControl</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="fps">FPS</string>
+    <string name="axis_format">(%1$.2f, %2$.2f)</string>
+    <string name="camera_width">Camera Width:</string>
+    <string name="camera_height">Camera Height:</string>
+    <string name="text_info">Display text info</string>
+    <string name="ctrl_v_pos">Position:</string>
+    <string name="update_freq">Update Freq:</string>
+    <string name="lock_attitude">Lock Attitude</string>
+    <string name="left_throttle">Left throttle</string>
+    <string name="attitude_sensitivity">Sensitivity:</string>
+    <string name="param_setting">Param setting</string>
+    <string name="quit">Quit</string>
+    <string name="view_setting">View Setting</string>
+    <string name="net_setting">Net Setting</string>
+    <string name="net_connect_fail">Net connection fail!</string>
+    <string name="ip_address">IP Address:</string>
+    <string name="ip_port">Port:</string>
+    <string name="conenct_to_server">Connect to server</string>
+    <string name="button_setting">Button Setting</string>
+    <string name="button">Button</string>
+    <string name="btn_enable">Enable</string>
+    <string name="btn_x">Pos X</string>
+    <string name="btn_y">Pos Y</string>
+    <string name="btn_name">Name</string>
+    <string name="btn_adj_pos">Adjust position</string>
+    <string name="btn_stop">Stop</string>
+    <string name="btn_ready">Ready</string>
+    <string name="axis_left_x">Left X</string>
+    <string name="axis_left_y">Left Y</string>
+    <string name="axis_right_x">Right X</string>
+    <string name="axis_right_y">Right Y</string>
+    <string name="axis_scale">Scale</string>
+    <string name="axis_offset">Offet</string>
+    <string name="axis_name">Axis</string>
+    <string name="axis_setting">Axis setting</string>
+    <string name="blue_setting">Bluetooth</string>
+    <string name="blue_address">MAC address</string>
+    <string name="blue_name">Device name</string>
+    <string name="blue_connect">Connect</string>
+    <string name="blue_not_valid">Bluetooth is not available!</string>
+    <string name="blue_search">Scan</string>
+    <string name="blue_paired_device">Paired devices</string>
+    <string name="blue_new_device">New devices</string>
+    <string name="blue_pair">Pair</string>
+    <string name="blue_no_device_paired">No devices have been paired!</string>
+    <string name="blue_no_device_found">No devices found!</string>
+    <string name="blue_connect_fail">Bluetooth connection fail!</string>
+    <string name="touch_both">MultiTouch detected, Both controls will work properly!</string>
+    <string name="touch_single">MultiTouch detected, but your device has problems distinguishing between fingers.\n\nControls are placed at different vertical locations.</string>
+	<string name="touch_none">Sorry your device does NOT support MultiTouch!\n\n(Falling back to SingleTouch.)\n\nControls are placed at different vertical locations.</string>
+	<string name="menu_about">About</string>
+	<string name="about_flycontrol">About Fly Control</string>
+	<string name="about_legal_line1">All rights reserved.</string>
+	<string name="about_legal_line2">Not liable for any damage incurred from use of this software.</string>
+	<string name="about_legal_line3">This program is distributed in the hope that it will be useful,</string>
+	<string name="about_legal_line4">but WITHOUT ANY WARRANTY; without even the implied warranty of</string> 
+	<string name="about_legal_line5">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</string>
+	
+	<string name="info_verion">Version: </string>
+	<string name="info_verion_num">0.1</string>
+	<string name="info_copyright">Copyright 2013</string>
+	<string name="info_link">http://goo.gl/JVVX6</string>
+	<string name="info_mail">lxyppc@gmail.com</string>
+	
+	<string name="menu_help">Help</string>
+</resources>

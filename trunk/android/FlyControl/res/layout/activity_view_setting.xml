@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView 
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/scroll" 
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+
+<LinearLayout
+    android:id="@+id/button_setting_layout"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/camera_width" />
+
+        <EditText
+        android:id="@+id/editWidth"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="number" >
+        <requestFocus />
+    </EditText>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/camera_height" />
+
+        <EditText
+        android:id="@+id/editHeight"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="number" >
+        <requestFocus />
+    </EditText>
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkTextInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_info" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/textVPos"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/ctrl_v_pos" />
+
+    <SeekBar
+        android:id="@+id/seekVPos"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    	android:layout_weight="1"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.7"
+        android:text=" " />
+	</LinearLayout>
+	
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/textFreq"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/update_freq" />
+    <SeekBar
+        android:id="@+id/seekFreq"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    	android:layout_weight="1"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.7"
+        android:text=" " />
+	</LinearLayout>
+	
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <CheckBox
+        android:id="@+id/checkLockAttitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lock_attitude" />
+	<CheckBox
+        android:id="@+id/checkLeftThrottle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/left_throttle" />
+	
+	</LinearLayout>
+    
+	<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/textSensitivity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/attitude_sensitivity" />
+    <SeekBar
+        android:id="@+id/seekSensitivity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    	android:layout_weight="1"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.7"
+        android:text=" " />
+	</LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <Button
+        android:id="@+id/view_setting_ok"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@android:string/ok" />
+
+    <Button
+        android:id="@+id/view_setting_cancel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@android:string/cancel" />
+    </LinearLayout>
+    
+</LinearLayout>
+</ScrollView>

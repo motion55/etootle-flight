@@ -533,6 +533,22 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QCheckBox" name="lockAttitude_cbPhoneControl_refly">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>220</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>一键重飞</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

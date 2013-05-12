@@ -55,6 +55,7 @@ public:
     static const int PARAMETER                          = 0x1D;
     static const int LOCK_ATTITUDE                      = 0x1E;
     static const int POSITION_IN_CAMERA                 = 0x1F;
+    static const int RAW_CONTROL_DATA                   = 0x20;
     //
     class ControlMode
     {

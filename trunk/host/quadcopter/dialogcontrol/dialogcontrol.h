@@ -46,10 +46,12 @@ signals:
     void sendHeartbeat();
     void lockThrottle_setThrottle(const QVector<float> &throttle);
     void lockAttitude(const QByteArray & param);
+    void on_tcp_data(const QByteArray & param);
 
 public slots:
     void onLockAttitude(const QByteArray & param);
     void onControlData(const ControlData& data);
+    void onContralRawData(const QByteArray & param);
 
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
@@ -77,6 +79,8 @@ private slots:
     void on_lockAttitude_btPhoneSetting_clicked();
 
     void on_lockAttitude_cbPhoneControl_clicked(bool checked);
+
+    void on_lockAttitude_cbPhoneControl_leftThro_clicked();
 
 private:
     void lockAttitude_changeThrottle(int delta);

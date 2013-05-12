@@ -21,6 +21,7 @@
 #include "ui_dialogcontrol.h"
 #include "protocol.h"
 #include <QSettings>
+#include "mymath.h"
 
 static const char * SETTINGS_MOUSE_SENSITITIVITY = "control/mouse_sensitivity";
 
@@ -49,6 +50,7 @@ DialogControl::DialogControl(QWidget *parent) :
             this,SLOT(onLockAttitudeTimer()));
     connect(&m_dialogTcpServer, SIGNAL(controlDataReady(ControlData)),
             this,SLOT(onControlData(ControlData)));
+    connect(&m_dialogTcpServer, SIGNAL(tcp_data(QByteArray)),  this, SIGNAL(on_tcp_data(QByteArray)));
     //
 }
 
@@ -310,10 +312,18 @@ void DialogControl::onLockAttitude(const QByteArray &param)
 {
 }
 
+void DialogControl::onContralRawData(const QByteArray & param)
+{
+    ControlData data;
+    memcpy(&data, param.constData(), sizeof(data));
+    onControlData(data);
+}
+
 void DialogControl::onControlData(const ControlData& data)
 {
     short thro = 0;
     short x,y;
+    static short lastBtn = -1;
     if(ui->lockAttitude_cbPhoneControl_leftThro->isChecked()){
         thro = data.y1;
         x = data.x2;
@@ -332,6 +342,18 @@ void DialogControl::onControlData(const ControlData& data)
         lockAttitude_changeThrottle(-thro/500);
     }
     ui->lockAttitude_widget->update_pos(x/20,-y/20);
+    if(lastBtn != -1 && ((lastBtn^data.button) & 1)){
+        if(data.button & 1){
+            // button 1 down
+            if(ui->lockAttitude_cbPhoneControl_refly->isChecked()){
+                emit setMode(Protocol::ControlMode::LOCK_ATTITUDE);
+                QByteArray send;
+                send.append(Protocol::LockAttitude::GET_READY);
+                emit lockAttitude(send);
+            }
+        }
+    }
+    lastBtn = data.button;
 }
 
 void DialogControl::on_btGetReady_clicked()
@@ -373,3 +395,39 @@ void DialogControl::on_lockAttitude_cbPhoneControl_clicked(bool checked)
     ui->lockAttitude_btPhoneSetting->setEnabled(checked);
     ui->lockAttitude_cbPhoneControl_leftThro->setEnabled(checked);
 }
+
+void DialogControl::on_lockAttitude_cbPhoneControl_leftThro_clicked()
+{
+    char head[] = {0x55,0xaa, 2, Protocol::VERSION, Protocol::RETURN_MESSAGE};
+    const char* str =  "\xE8\xBF\x9B\xE5\x85\xA5\xE5\x81"
+            "\x9C\xE6\x9C\xBA\xE6\xA8\xA1\xE5\xBC\x8F"
+            /*"进入停机模式"*/;
+    static int i = 0;
+    i++;
+    if(i&1){
+        str = "\xE8\xBF\x9B\xE5\x85\xA5\xE9\x94"
+                "\x81\xE5\xAE\x9A\xE5\xA7\xBF\xE6"
+                "\x80\x81\xE6\xA8\xA1\xE5\xBC\x8F";
+    }
+
+    QByteArray ba;
+    head[2] = strlen(str) + 4;
+    ba.append(head,sizeof(head));
+    ba.append(str, strlen(str));
+
+    char protocol = Protocol::VERSION;
+    char type = Protocol::RETURN_MESSAGE;
+    uint16_t crc = MyMath::crc16(0,&protocol,1);
+    crc = MyMath::crc16(crc,&type,1);
+    crc = MyMath::crc16(crc,str,strlen(str));
+    ba.append((uint8_t)(crc >> 8));
+    ba.append((uint8_t)crc);
+    m_dialogTcpServer.send_tcp_data(ba);
+}
+
+
+
+
+
+
+

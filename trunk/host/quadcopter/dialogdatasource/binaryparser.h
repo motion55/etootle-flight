@@ -44,6 +44,7 @@ signals:
     void onBootloaderStatus(uint8_t status,QByteArray param);
     void onParameter(const QByteArray & param);
     void onControlLockAttitude(const QByteArray & param);
+    void onControlRawData(const QByteArray & param);
 
 public slots:
     void onReceivedData(const QByteArray &bytes);

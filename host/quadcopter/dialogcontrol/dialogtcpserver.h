@@ -27,12 +27,15 @@ public:
     ~DialogTcpServer();
 signals:
     void controlDataReady(ControlData controlData);
+    void tcp_data(const QByteArray& data);
 private slots:
     void on_btnListen_clicked();
     void tcp_new_connection();
     void tcp_client_disconnected();
     void tcp_client_readyRead();
     void on_btnClose_clicked();
+public slots:
+    void send_tcp_data(const QByteArray& data);
 
 private:
     Ui::DialogTcpServer *ui;

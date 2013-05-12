@@ -215,6 +215,13 @@ void BinaryParser::frameCompleted(const char frame[], int len)
             emit onControlLockAttitude(QByteArray((const char *)param,param_len));
         }
         break;
+    case Protocol::RAW_CONTROL_DATA:
+        {
+            if(param_len < 5*2)
+                break;
+            emit onControlRawData(QByteArray((const char *)param,param_len));
+        }
+        break;
     }
 }
 

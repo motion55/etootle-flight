@@ -74,6 +74,11 @@ MainWindow::MainWindow(QWidget *parent) :
             &binaryParser,SLOT(control_lockAttitude(QByteArray)));
     connect(&binaryParser,SIGNAL(onControlLockAttitude(QByteArray)),
             &m_dialogControl,SLOT(onLockAttitude(QByteArray)));
+    connect(&m_dialogControl,SIGNAL(on_tcp_data(QByteArray)),
+            &binaryParser, SLOT(onReceivedData(QByteArray)));
+    connect(&binaryParser,SIGNAL(onControlRawData(QByteArray)),
+            &m_dialogControl, SLOT(onContralRawData(QByteArray)));
+
     //
     // 参数面板与二进制解析器。
     connect(&m_dialogParameter,SIGNAL(parameter(QByteArray)),

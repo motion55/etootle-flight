@@ -86,7 +86,8 @@ void DialogTcpServer::tcp_client_disconnected()
 void DialogTcpServer::tcp_client_readyRead()
 {
     if(!tcpClient) return;
-    parser_tcp_data(tcpClient->readAll());
+    //parser_tcp_data(tcpClient->readAll());
+    emit tcp_data(tcpClient->readAll());
 }
 
 union short_char{
@@ -96,6 +97,13 @@ union short_char{
         char h;
     };
 };
+
+void DialogTcpServer::send_tcp_data(const QByteArray& data)
+{
+    if(tcpClient){
+        tcpClient->write(data);
+    }
+}
 
 void DialogTcpServer::parser_tcp_data(const QByteArray& data)
 {

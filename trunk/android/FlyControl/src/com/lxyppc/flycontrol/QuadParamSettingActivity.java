@@ -27,5 +27,14 @@ public class QuadParamSettingActivity extends TabActivity {
 		spec.setContent(intent);
 		host.addTab(spec);
 		
+		intent = new Intent().setClass(this, HorizonSettingActivity.class);
+		spec = host.newTabSpec(HORIZON_TAB);
+		spec.setIndicator(getString(R.string.quad_horizon));
+		spec.setContent(intent);
+		host.addTab(spec);
+		final int height = 45;
+		host.getTabWidget().getChildAt(0).getLayoutParams().height = height;
+		host.getTabWidget().getChildAt(1).getLayoutParams().height = height;
+		host.getTabWidget().getChildAt(2).getLayoutParams().height = height;
 	}
 }

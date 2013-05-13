@@ -36,7 +36,7 @@
     #define RF_CMD_RWR_MASK 0x1F/*0b00011111*/  /* 寄存器地址掩码，0bcccaaaaa */
 #define RF_CMD_R_RX_PAYLOAD 0x61/*0b01100001*/  /* 获取数据。 */
 #define RF_CMD_W_TX_PAYLOAD 0xA0/*0b10100000*/  /* 推送数据。 */
-#define RF_CMD_W_ACK_PAYLOAD 0xA0/*0b10100000*/  /* ACK数据。 */
+#define RF_CMD_W_ACK_PAYLOAD 0xA8/*0b10100000*/  /* 推送ACK数据。 */
 #define RF_CMD_FLUSH_TX     0xE1/*0b11100001*/  /* 清空发送缓存。 */
 #define RF_CMD_FLUSH_RX     0xE2/*0b11100010*/  /* 清空接收缓存。 */
 #define RF_CMD_R_RX_PL_WID  0x60/*0b01100000*/  /* 获取接收到的数据的长度。 */
@@ -99,8 +99,8 @@
     #define RF_REG_DYNPD_DEFAULT RF_REG_DYNPD_DPL_P0 /* 默认。 */
 #define RF_REG_FEATURE 0x1D
     #define RF_REG_FEATURE_EN_DPL   _BV(2) /* 允许动态数据长度。 */
-    #define RF_REG_FEATURE_EN_ACKPL   _BV(1) /* 允许ACK数据。 */
-    #define RF_REG_FEATURE_DEFAULT (RF_REG_FEATURE_EN_DPL|RF_REG_FEATURE_EN_ACKPL) /* 默认。 */
+    #define RF_REG_FEATURE_EN_ACKPL _BV(1) /* 允许ACK数据。 */
+    #define RF_REG_FEATURE_DEFAULT (RF_REG_FEATURE_EN_DPL | RF_REG_FEATURE_EN_ACKPL)/* 默认。 */
 #define RF_REG_RX_ADDR_P0 0x0A /* 接收的地址 */
 #define RF_REG_TX_ADDR    0x10 /* 发送目的地址 */
 #define RF_REG_RX_PW_P0   0x11 /* 0接收通道收到的数据的长度。 */

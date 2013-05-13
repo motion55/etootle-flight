@@ -39,6 +39,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 
+#ifdef RF_USE_ACK_PAYLOAD
+#warning Usb ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
+#endif
+
 extern __IO uint8_t PrevXferComplete;
 __IO uint32_t USBConnectTimeOut = 100;
 
@@ -54,7 +58,9 @@ const uint8_t nrf_addr[] = {0xE7, 0xE7, 0xE7, 0xE7, 0xE7};// RX_ADDR0;
 /* callback functions */
 void nrf_tx_done(uint8_t success)
 {
-    //nrf_enter_rx_mode();
+#ifndef RF_USE_ACK_PAYLOAD
+    nrf_enter_rx_mode();
+#endif
     LED7_OFF;
     LED4_OFF;
     LED5_OFF;
@@ -102,7 +108,11 @@ int main(void)
     
     nrf_init();
     nrf_detect();
+#ifdef RF_USE_ACK_PAYLOAD
+    nrf_tx_mode_dyn(nrf_addr, 4, 0);
+#else
     nrf_tx_mode_dual(nrf_addr, 4, 0);
+#endif
     {
         uint8_t status = nrf_read_reg(NRF_STATUS);
         nrf_write_reg(NRF_FLUSH_RX, 0xff);
@@ -125,7 +135,9 @@ int main(void)
         if(ring_buf_pop(usb_rx, data, 64)){
             if(data[0] == 0x55 && data[1] == 0xaa && data[2]<32){
                 // process usb data
-                //nrf_enter_tx_mode();
+#ifndef RF_USE_ACK_PAYLOAD
+                nrf_enter_tx_mode();
+#endif
                 LED7_ON;
                 nrf_tx_packet_no_wait(data+3, data[2]);
                 LED8_TOGGLE;

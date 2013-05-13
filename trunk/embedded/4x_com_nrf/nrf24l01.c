@@ -24,6 +24,7 @@ u8  RX_ADDRESS[RX_ADR_WIDTH]= {0x76,0x64,0xB7,0x5A};	//接收地址
 #define RD_RX_PL_WID    0x60  	// 读取接收数据指令
 #define RD_RX_PLOAD     0x61  	// 读取接收数据指令
 #define WR_TX_PLOAD     0xA0  	// 写待发数据指令
+#define WR_ACK_PLOAD    0xA8    // 写ACK数据指令
 #define FLUSH_TX        0xE1 	// 冲洗发送 FIFO指令
 #define FLUSH_RX        0xE2  	// 冲洗接收 FIFO指令
 #define REUSE_TX_PL     0xE3  	// 定义重复装载数据指令
@@ -57,6 +58,10 @@ u8  RX_ADDRESS[RX_ADR_WIDTH]= {0x76,0x64,0xB7,0x5A};	//接收地址
 #define DYN_PLOAD_WIDTH_P0	   	0x1C
 #define DYN_PLOAD_WIDTH     	0x1D  
 ///**************************************************************************************
+
+#ifdef RF_USE_ACK_PAYLOAD
+#warning Usb ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
+#endif
 
 u8 NRF24L01_TxBuf[32]={0};
 u8 RxBuf[32]={0};
@@ -107,7 +112,11 @@ void init_NRF24L01(void)
 	SPI_WR_Reg(WRITE_REG + RF_CH, 0);        			//设置信道工作为2.4GHZ，收发必须一致
 	SPI_WR_Reg(WRITE_REG + RF_SETUP, 0x0E);   			//设置发射速率为1MHZ，发射功率为最大值0dB	
 	SPI_WR_Reg(WRITE_REG + DYN_PLOAD_WIDTH_P0, 0x01);	//k: enable dynamic payload length in P0 only
-	SPI_WR_Reg(WRITE_REG + DYN_PLOAD_WIDTH, 0x04);		//k: enable dynamic payload lenth
+#ifdef RF_USE_ACK_PAYLOAD
+	SPI_WR_Reg(WRITE_REG + DYN_PLOAD_WIDTH, 0x04 | 0x02);		//k: enable dynamic payload lenth
+#else
+    SPI_WR_Reg(WRITE_REG + DYN_PLOAD_WIDTH, 0x04);		//k: enable dynamic payload lenth
+#endif
 
 	rf_pin_ce_high(); 
 }
@@ -202,7 +211,9 @@ void nRF24L01_TxPacket(unsigned char * tx_buf)
 void rf_startReceive(void)
 {
     rf_pin_ce_low();
+#ifndef RF_USE_ACK_PAYLOAD
 	SPI_WR_Reg(WRITE_REG + CONFIG, 0x0F);
+#endif
     rf_pin_ce_high();
 }
 
@@ -234,10 +245,14 @@ u8 rf_transmit(u8 * data,u8 len)
     //
 
     rf_pin_ce_low();
+#ifdef RF_USE_ACK_PAYLOAD
+    SPI_Write_Buf(WR_ACK_PLOAD,data,len);
+#else
    	SPI_WR_Reg(WRITE_REG + CONFIG, 0x0E);  //TX
 
 
 	SPI_Write_Buf(WR_TX_PLOAD,data,len);
+#endif
     rf_pin_ce_high();
     //
     return 0;

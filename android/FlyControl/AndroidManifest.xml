@@ -50,5 +50,8 @@
         <activity
             android:name="com.lxyppc.flycontrol.PIDSettingActivity">
         </activity>
+        <activity
+            android:name="com.lxyppc.flycontrol.HorizonSettingActivity">
+        </activity>
     </application>
 </manifest>

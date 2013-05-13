@@ -6,9 +6,12 @@
       android:layout_height="wrap_content">
 
 <LinearLayout
-    android:id="@+id/sensor_param_layout" 
+    android:id="@+id/button_setting_layout"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
+
+    
+    
 </LinearLayout>
 </ScrollView>

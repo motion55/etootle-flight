@@ -396,6 +396,12 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 				startActivityForResult(i, R.id.action_axis_settings);
 			}	
 				break;
+            case R.id.action_quad_param:
+            {
+            	Intent i = new Intent(this, QuadParamSettingActivity.class);
+				this.startActivity(i);
+            }
+            	break;
 			case R.id.action_about:
 			{
 				AboutDialog about = new AboutDialog(this);

@@ -41,5 +41,14 @@
         <activity
             android:name="com.lxyppc.flycontrol.BlueSettingActivity">
         </activity>
+        <activity
+            android:name="com.lxyppc.flycontrol.QuadParamSettingActivity">
+        </activity>
+        <activity
+            android:name="com.lxyppc.flycontrol.SensorSettingActivity">
+        </activity>
+        <activity
+            android:name="com.lxyppc.flycontrol.PIDSettingActivity">
+        </activity>
     </application>
 </manifest>

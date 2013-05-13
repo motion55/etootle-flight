@@ -8,6 +8,14 @@
         android:icon="@android:drawable/ic_menu_preferences">
     </item>
     
+    
+    <item
+        android:orderInCategory="100"
+        android:title="@string/control_setting" 
+        android:alphabeticShortcut="@string/control_setting" 
+        android:icon="@android:drawable/ic_menu_preferences">
+    
+    <menu>
     <item
         android:id="@+id/action_axis_settings"
         android:orderInCategory="100"
@@ -17,27 +25,57 @@
     </item>
     
     <item
-        android:id="@+id/action_net_settings"
-        android:orderInCategory="100"
-        android:title="@string/net_setting" 
-        android:alphabeticShortcut="@string/net_setting" 
-        android:icon="@android:drawable/ic_menu_preferences">
-    </item>
-    
-    <item
-        android:id="@+id/action_blue_settings"
-        android:orderInCategory="100"
-        android:title="@string/blue_setting" 
-        android:alphabeticShortcut="@string/blue_setting" 
-        android:icon="@android:drawable/ic_menu_preferences">
-    </item>
-    
-    <item
         android:id="@+id/action_button_settings"
         android:orderInCategory="100"
         android:title="@string/button_setting" 
         android:alphabeticShortcut="@string/button_setting" 
         android:icon="@android:drawable/ic_menu_preferences">
+    </item>
+    
+    </menu>
+    </item>
+    <item
+        android:orderInCategory="100"
+        android:title="@string/commnunication_setting" 
+        android:alphabeticShortcut="@string/commnunication_setting" 
+        android:icon="@android:drawable/ic_menu_preferences">
+
+    <menu>
+	    <item
+	        android:id="@+id/action_net_settings"
+	        android:orderInCategory="100"
+	        android:title="@string/net_setting" 
+	        android:alphabeticShortcut="@string/net_setting" 
+	        android:icon="@android:drawable/ic_menu_preferences">
+	    </item>
+	    
+	    <item
+	        android:id="@+id/action_blue_settings"
+	        android:orderInCategory="100"
+	        android:title="@string/blue_setting" 
+	        android:alphabeticShortcut="@string/blue_setting" 
+	        android:icon="@android:drawable/ic_menu_preferences">
+	    </item>
+    
+    </menu>
+    </item>
+    
+
+    <item
+        android:orderInCategory="100"
+        android:title="@string/quad_setting" 
+        android:alphabeticShortcut="@string/quad_setting" 
+        android:icon="@android:drawable/ic_menu_preferences">
+
+    <menu>
+		<item
+	        android:id="@+id/action_quad_param"
+	        android:orderInCategory="100"
+	        android:title="@string/quad_param" 
+	        android:alphabeticShortcut="@string/quad_param" 
+	        android:icon="@android:drawable/ic_dialog_info">
+	    </item>
+    </menu>
     </item>
 
     <item

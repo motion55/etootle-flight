@@ -17,6 +17,9 @@
     <string name="param_setting">参数设置</string>
     <string name="quit">退出</string>
     <string name="view_setting">显示设置</string>
+    <string name="commnunication_setting">通讯设置</string>
+    <string name="control_setting">控制设置</string>
+    <string name="quad_setting">四轴设置</string>
     <string name="net_setting">网络设置</string>
     <string name="net_connect_fail">网络连接失败!</string>
     <string name="ip_address">IP地址:</string>
@@ -48,6 +51,15 @@
     <string name="blue_paired_device">已配对设备</string>
     <string name="blue_new_device">新设备</string>
     <string name="blue_pair">配对</string>
+    <string name="quad_param">四轴参数</string>
+    <string name="quad_sensor">传感器</string>
+    <string name="quad_pid">PID</string>
+    <string name="quad_acc_offset">加计偏移</string>
+    <string name="quad_acc_gain">加计比例</string>
+    <string name="quad_gyro_offset">陀螺偏移</string>
+    <string name="quad_gyro_gain">陀螺比例</string>
+    <string name="quad_mag_offset">罗盘偏移</string>
+    <string name="quad_mag_gain">罗盘比例</string>
     <string name="blue_no_device_paired">没有已配对设备!</string>
     <string name="blue_no_device_found">没有发现设备!</string>
     <string name="blue_connect_fail">蓝牙连接失败!</string>
@@ -56,7 +68,11 @@
 	<string name="touch_none">不支持多点触摸!\n\n(使用单点模式)\n\n摇杆放在不同的纵坐标中.</string>
 	<string name="menu_about">关于</string>
 	<string name="about_flycontrol">关于 飞控模拟器</string>
-	
+	<string name="about_legal_line1">lxyppc 版权所有</string>
+	<string name="about_legal_line2">程序仅为使用者提供参考</string>
+	<string name="about_legal_line3">不对在使用该程序中出现的意外或者损失负责</string>
+	<string name="about_legal_line4">也不对因使用该程序而引起的第三方索赔负责</string> 
+	<string name="about_legal_line5"></string>
 	<string name="info_verion">版本: </string>
 	
 	<string name="menu_help">帮助</string>

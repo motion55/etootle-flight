@@ -17,6 +17,9 @@
     <string name="param_setting">Param setting</string>
     <string name="quit">Quit</string>
     <string name="view_setting">View Setting</string>
+    <string name="commnunication_setting">Communicate Setting</string>
+    <string name="control_setting">Control Setting</string>
+    <string name="quad_setting">QuadCopter Setting</string>
     <string name="net_setting">Net Setting</string>
     <string name="net_connect_fail">Net connection fail!</string>
     <string name="ip_address">IP Address:</string>
@@ -48,6 +51,15 @@
     <string name="blue_paired_device">Paired devices</string>
     <string name="blue_new_device">New devices</string>
     <string name="blue_pair">Pair</string>
+    <string name="quad_param">QuadCopter param</string>
+    <string name="quad_sensor">Sensor</string>
+    <string name="quad_pid">PID</string>
+    <string name="quad_acc_offset">Acc Off</string>
+    <string name="quad_acc_gain">Acc Gain</string>
+    <string name="quad_gyro_offset">Gyro Off</string>
+    <string name="quad_gyro_gain">Gyro Gain</string>
+    <string name="quad_mag_offset">Mag Off</string>
+    <string name="quad_mag_gain">Mag Gain</string>
     <string name="blue_no_device_paired">No devices have been paired!</string>
     <string name="blue_no_device_found">No devices found!</string>
     <string name="blue_connect_fail">Bluetooth connection fail!</string>
@@ -56,7 +68,7 @@
 	<string name="touch_none">Sorry your device does NOT support MultiTouch!\n\n(Falling back to SingleTouch.)\n\nControls are placed at different vertical locations.</string>
 	<string name="menu_about">About</string>
 	<string name="about_flycontrol">About Fly Control</string>
-	<string name="about_legal_line1">All rights reserved.</string>
+	<string name="about_legal_line1">lxyppc All rights reserved.</string>
 	<string name="about_legal_line2">Not liable for any damage incurred from use of this software.</string>
 	<string name="about_legal_line3">This program is distributed in the hope that it will be useful,</string>
 	<string name="about_legal_line4">but WITHOUT ANY WARRANTY; without even the implied warranty of</string> 

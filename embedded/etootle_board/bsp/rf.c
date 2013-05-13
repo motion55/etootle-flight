@@ -100,10 +100,18 @@
 #define RF_REG_FEATURE 0x1D
     #define RF_REG_FEATURE_EN_DPL   _BV(2) /* 允许动态数据长度。 */
     #define RF_REG_FEATURE_EN_ACKPL _BV(1) /* 允许ACK数据。 */
+#ifdef RF_USE_ACK_PAYLOAD
     #define RF_REG_FEATURE_DEFAULT (RF_REG_FEATURE_EN_DPL | RF_REG_FEATURE_EN_ACKPL)/* 默认。 */
+#else
+    #define RF_REG_FEATURE_DEFAULT (RF_REG_FEATURE_EN_DPL)/* 默认。 */
+#endif
 #define RF_REG_RX_ADDR_P0 0x0A /* 接收的地址 */
 #define RF_REG_TX_ADDR    0x10 /* 发送目的地址 */
 #define RF_REG_RX_PW_P0   0x11 /* 0接收通道收到的数据的长度。 */
+
+#ifdef RF_USE_ACK_PAYLOAD
+#warning Usb ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
+#endif
 
 int32_t     rf_init(void);
 int32_t     rf_transmit(const uint8_t * data,uint32_t len);
@@ -169,7 +177,9 @@ int32_t rf_transmit(const uint8_t * data,uint32_t len)
         return 1;
     //
     rf_hal_ceLow();
-    //rf_writeRegester(RF_REG_CONFIG,RF_REG_CONFIG_DEFAULT_T);
+#ifndef RF_USE_ACK_PAYLOAD
+    rf_writeRegester(RF_REG_CONFIG,RF_REG_CONFIG_DEFAULT_T);
+#endif
     rf_writeData(data,len);
     rf_hal_ceHigh();
     //
@@ -179,7 +189,9 @@ int32_t rf_transmit(const uint8_t * data,uint32_t len)
 void rf_startReceive(void)
 {
     rf_hal_ceLow();
-    //rf_writeRegester(RF_REG_CONFIG,RF_REG_CONFIG_DEFAULT_R);
+#ifndef RF_USE_ACK_PAYLOAD
+    rf_writeRegester(RF_REG_CONFIG,RF_REG_CONFIG_DEFAULT_R);
+#endif
     rf_hal_ceHigh();
 }
 
@@ -290,8 +302,11 @@ void rf_writeData(const uint8_t * data,uint8_t len)
 {
     rf_hal_spiBegin();
     //
-    //rf_hal_spiSwap(RF_CMD_W_TX_PAYLOAD);
+#ifdef RF_USE_ACK_PAYLOAD
     rf_hal_spiSwap(RF_CMD_W_ACK_PAYLOAD);
+#else
+    rf_hal_spiSwap(RF_CMD_W_TX_PAYLOAD);
+#endif
     for(uint8_t i=0;i<len;i++)
         rf_hal_spiSwap(data[i]);
     //

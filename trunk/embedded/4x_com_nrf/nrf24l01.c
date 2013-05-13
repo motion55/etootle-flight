@@ -60,7 +60,7 @@ u8  RX_ADDRESS[RX_ADR_WIDTH]= {0x76,0x64,0xB7,0x5A};	//Ω” ’µÿ÷∑
 ///**************************************************************************************
 
 #ifdef RF_USE_ACK_PAYLOAD
-#warning Usb ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
+#warning Use ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
 #endif
 
 u8 NRF24L01_TxBuf[32]={0};

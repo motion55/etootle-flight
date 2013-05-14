@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -29,6 +29,7 @@
 #include "app/control/interface.h"
 #include "app/status/interface.h"
 #include "app/param/interface.h"
+#include <stm32f10x.h>
 
 void    cmd_getVector(uint8_t type);
 void    cmd_getAttitude(void);
@@ -196,7 +197,11 @@ void cmd_bootloaderCmd(uint8_t cmd,const uint8_t param[],int32_t param_length)
         case PROTOCOL_BOOTLOADER_CMD_ENTER_BOOTLOADER :
         {
             // 请求进入bootloader。
-            int32_t pReset = *(int32_t *)(0+4);
+            int32_t pReset = *(int32_t *)(0x08000000+4);
+            __disable_irq();
+            RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_SPI1, ENABLE);
+            RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_SPI1, DISABLE);
+            __set_MSP(*(int32_t *)(0x08000000));
             ((void (*)(void))(pReset))();
         }
         break;

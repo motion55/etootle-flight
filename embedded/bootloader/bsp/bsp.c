@@ -29,6 +29,8 @@
 
 void bsp_init(void)
 {
+    NVIC_SetVectorTable(NVIC_VectTab_FLASH,(uint32_t)0x0000);
+    
     RCC_AHBPeriphClockCmd(
         RCC_AHBPeriph_DMA1,ENABLE);
     RCC_APB1PeriphClockCmd(
@@ -44,6 +46,7 @@ void bsp_init(void)
         RCC_APB2Periph_ADC1,ENABLE);
     //
     GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);
+    __enable_irq();
     //
     time_init();
     time_waitMs(100);

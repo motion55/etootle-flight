@@ -79,7 +79,7 @@ public class HorizonSettingActivity extends Activity {
 			edits[i*4 + 2] = params[i].y;
 			edits[i*4 + 3] = params[i].z;
 		}
-		buttons = new QuadParamSettingActivity.ParamButton(this, 28, 4, edits);
+		buttons = new QuadParamSettingActivity.ParamButton(this, 19, 4, edits);
 		buttons.append2layout(tl);
 	}
 	

@@ -40,7 +40,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 #ifdef RF_USE_ACK_PAYLOAD
-#warning Usb ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
+#warning Use ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
 #endif
 
 extern __IO uint8_t PrevXferComplete;

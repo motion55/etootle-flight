@@ -110,7 +110,7 @@
 #define RF_REG_RX_PW_P0   0x11 /* 0接收通道收到的数据的长度。 */
 
 #ifdef RF_USE_ACK_PAYLOAD
-#warning Usb ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
+#warning Use ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
 #endif
 
 int32_t     rf_init(void);

@@ -23,7 +23,7 @@ public class BinaryParser {
 	BinaryParser(Signals signal){
 	    m_status = FINDING_55;
 	    m_frameLength = 0;
-	    m_checkCrc = true;
+	    m_checkCrc = false;
 	    m_needPrintTransmitPacket = false;
 	    m_needPrintReceivePacket = false;
 	    emit = signal;

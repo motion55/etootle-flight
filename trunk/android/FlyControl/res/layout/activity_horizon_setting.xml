@@ -6,7 +6,7 @@
       android:layout_height="wrap_content">
 
 <LinearLayout
-    android:id="@+id/button_setting_layout"
+    android:id="@+id/horizon_param_layout"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >

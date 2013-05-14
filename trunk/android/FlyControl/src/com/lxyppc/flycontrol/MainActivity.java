@@ -112,6 +112,8 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	
 	private BinaryParser mBinaryParser = null;
 	
+	private static MainActivity instance = null;
+	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		mViewSetting.restore(this, PRE_NAME);
@@ -137,6 +139,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		mBinaryParser = new BinaryParser(new ControlSignal());
 		
 		mBtnGroup.setButtonListener(this);
+		instance = this;
 		return engineOptions;
 	}
     
@@ -342,6 +345,14 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		return true;
 	}
 	
+	public static interface OnParameter{
+		void onParameter(byte[] param);
+	}
+	public static interface OnReturnMessage{
+		void onReturnMessage(String msg);
+	}
+	private OnParameter onParameterL = null;
+	private OnReturnMessage onReturnMessageL = null;
 	public class ControlSignal extends BinaryParser.Signals{
 		void printMessage(String msg){
 			for(int i=mInfoText.length-1;i>0;i--){
@@ -352,8 +363,12 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		void send(byte[] data){
 			sendMessge(new FrameMessage(data));
 		}
-		void onReturnMessage(String msg){ 
+		void onReturnMessage(String msg){
+			if(onReturnMessageL != null) onReturnMessageL.onReturnMessage(msg);
 			printMessage(msg);
+		}
+		void onParameter(byte[] param){
+			if(onParameterL != null) onParameterL.onParameter(param);
 		}
 	}
 	
@@ -399,7 +414,8 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
             case R.id.action_quad_param:
             {
             	Intent i = new Intent(this, QuadParamSettingActivity.class);
-				this.startActivity(i);
+            	mSendControlData = false;
+				this.startActivityForResult(i, R.id.action_quad_param);
             }
             	break;
 			case R.id.action_about:
@@ -511,6 +527,9 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
             		mAxisSetting.fromIntent(data);
             		mAxisSetting.save(this, PRE_NAME);
             	}
+            	break;
+            case R.id.action_quad_param:
+            	mSendControlData = true;
             	break;
          }
 	}
@@ -738,6 +757,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		}
 	}
 	
+	protected boolean mSendControlData = true;
 	protected boolean mRunning = true;
 	protected Object mDataSig = new Object();
 	protected Thread mDataProcessor = new Thread(){
@@ -748,7 +768,9 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 					synchronized(mDataSig){
 						mDataSig.wait();
 					}
-					sendControlState(mX1,mY1,mX2,mY2);
+					if(mSendControlData){
+						sendControlState(mX1,mY1,mX2,mY2);
+					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -844,6 +866,22 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 			}
 			break;
 		}
+	}
+	
+	public static MainActivity getInstance(){
+		return instance;
+	}
+	
+	public static BinaryParser getParser(){
+		return instance.mBinaryParser;
+	}
+	
+	public static void setOnParameterListener(OnParameter l){
+		instance.onParameterL = l;
+	}
+	
+	public static void setOnReturnMessageListener(OnReturnMessage l){
+		instance.onReturnMessageL = l;
 	}
 	
 	@Override

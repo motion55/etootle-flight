@@ -54,7 +54,9 @@ public class MyMath {
 		int l = (data.length - offset) / 4;
 		if(count>l)count = l;
 		float[] r = new float[count];
-		ByteBuffer byteBuf = ByteBuffer.wrap(data, offset, data.length - offset);
+		byte[] temp = new byte[data.length - offset];
+		System.arraycopy(data, offset, temp, 0, temp.length);
+		ByteBuffer byteBuf = ByteBuffer.wrap(temp);
 		byteBuf = byteBuf.order(null);
 		for(int i=0;i<count;i++){
 			r[i] = byteBuf.getFloat(i*4);

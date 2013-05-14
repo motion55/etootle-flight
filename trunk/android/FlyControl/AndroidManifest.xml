@@ -42,16 +42,16 @@
             android:name="com.lxyppc.flycontrol.BlueSettingActivity">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.QuadParamSettingActivity">
+            android:name="com.lxyppc.flycontrol.QuadParamSettingActivity" android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.SensorSettingActivity">
+            android:name="com.lxyppc.flycontrol.SensorSettingActivity" android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.PIDSettingActivity">
+            android:name="com.lxyppc.flycontrol.PIDSettingActivity" android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.HorizonSettingActivity">
+            android:name="com.lxyppc.flycontrol.HorizonSettingActivity" android:configChanges="orientation|keyboardHidden">
         </activity>
     </application>
 </manifest>

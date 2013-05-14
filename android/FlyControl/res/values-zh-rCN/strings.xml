@@ -67,6 +67,12 @@
     <string name="quad_get_flash">读Flash</string>
     <string name="quad_set_flash">写Flash</string>
     <string name="quad_reset_flash">重置Flash</string>
+    <string name="quad_com_timeout">通讯超时!</string>
+    <string name="quad_com_data_error">通讯数据错误!</string>
+    <string name="quad_com_sucess">通讯成功!</string>
+    <string name="quad_com_status">通讯状态:  </string>
+    <string name="quad_confirm_write_flash">确定写入Flash参数?</string>
+    <string name="quad_confirm_reset_flash">确定重置Flash参数?</string>
     <string name="blue_no_device_paired">没有已配对设备!</string>
     <string name="blue_no_device_found">没有发现设备!</string>
     <string name="blue_connect_fail">蓝牙连接失败!</string>

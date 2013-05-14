@@ -51,7 +51,7 @@ const uint8_t nrf_addr[] = {0xE7, 0xE7, 0xE7, 0xE7, 0xE7};// RX_ADDR0;
 /* Private functions ---------------------------------------------------------*/
 
 #ifdef RF_USE_ACK_PAYLOAD
-#warning Usb ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
+#warning Use ACK payload mode, make sure the "remote controller", "bootloader", and "app" use the same rf mode
 #endif
 
 /* callback functions */

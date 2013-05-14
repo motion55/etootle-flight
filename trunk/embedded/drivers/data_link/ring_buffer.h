@@ -64,13 +64,12 @@ uint32_t ring_buffer_length(const ring_buffer_t* buf);
   * @brief  Declare a ring buffer
   * @param  name: name of the ring buffer, can be used with the ring_xx functions
   * @param  size: max size of the ring buffer content
-  * @param  len: length of the ring buffer
+  * @param  len: length of the ring buffer, must be 2^n ( n>=0 )
   */
 #define  DECLARE_RING_BUFFER(name,size,len)  \
     uint32_t  name##_mem[( (size+3)/4)*len + 2];\
     const uint32_t   name##_check_param[len & (len-1) ? -1 : (len > 0 ? 1 : -1)];\
-    const uint32_t name##_const[3] = {len, size, (uint32_t)name##_mem };\
+    const struct {uint32_t l; uint32_t s; uint32_t* mem;} name##_const = {len, size, name##_mem };\
     const ring_buffer_t* name = (const ring_buffer_t*)&name##_const;
-
 
 #endif

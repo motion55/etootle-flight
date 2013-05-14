@@ -204,9 +204,11 @@ public class BinaryParser {
 	            //
 	            String str;
 				try {
-					str = new String(param, "UTF-8");
+					byte[] t = new byte[param.length-2];
+					System.arraycopy(param, 0, t, 0, param.length-2);
+					str = new String(t, "UTF-8");
 					// because utf8 is 3 byte, crc is 2 byte, there is need to sub before divide
-					str = str.substring(0, param.length/3); 
+					//str = str.substring(0, param.length/3); 
 				} catch (UnsupportedEncodingException e) {
 					str = "Can not convert to utf8";
 					e.printStackTrace();

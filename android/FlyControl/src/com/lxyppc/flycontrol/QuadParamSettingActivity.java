@@ -120,6 +120,7 @@ public class QuadParamSettingActivity extends TabActivity {
 		private MainActivity.OnParameter onParam = new MainActivity.OnParameter(){
 			public void onParameter(byte[] param) {
 				System.arraycopy(param, 0, returnParam, 0, param.length);
+				returnLength = param.length;
 				synchronized(mSync){
 					m_return = true;
 					mSync.notify();
@@ -128,13 +129,14 @@ public class QuadParamSettingActivity extends TabActivity {
 		};
 		private MainActivity.OnReturnMessage onReturnMessage = new MainActivity.OnReturnMessage(){
 			public void onReturnMessage(String param) {
-				info.setText(param);
+				setMessage(param);
 			}
 		};
 		
 		private int workMode = 0;
 		private boolean m_return = false;
 		private byte[] returnParam = new byte[64];
+		private int returnLength = 0;
 		private Object mSync = new Object();
 		boolean waitResult(){
 			//Log.i("Quad", "start wait");
@@ -174,8 +176,9 @@ public class QuadParamSettingActivity extends TabActivity {
 							if(mode == workMode+1){
 								int pos = returnParam[1]<0?returnParam[1]+256:returnParam[1];
 								pos-=mStart;
+								int len = (returnLength-1)/4;
 								if(idx<mEdits.length && idx == pos){
-									float r[] = MyMath.toFloat(returnParam, 3, 1);
+									float r[] = MyMath.toFloat(returnParam, 2, len);
 									setText(idx, String.format("%f",r[0]));
 								}
 								setProgress(idx+1);
@@ -192,7 +195,7 @@ public class QuadParamSettingActivity extends TabActivity {
 					{
 						int idx;
 						for(idx=0;idx<mCount;idx++){
-							byte[] param = new byte[]{(byte) workMode,(byte) (mStart+idx), 1, 0, 0, 0, 0};
+							byte[] param = new byte[]{(byte) workMode,(byte) (mStart+idx), 0, 0, 0, 0};
 							if(idx<mEdits.length){
 								String r = mEdits[idx].getText().toString();
 								
@@ -203,7 +206,7 @@ public class QuadParamSettingActivity extends TabActivity {
 									
 								}
 								byte[] b = MyMath.toByte(f);
-								System.arraycopy(b, 0, param, 3, 4);
+								System.arraycopy(b, 0, param, 2, 4);
 								sendParam(param);
 								if(!waitResult()){
 									break;
@@ -211,7 +214,8 @@ public class QuadParamSettingActivity extends TabActivity {
 								int mode = returnParam[0];
 								if(mode<0)mode+=256;
 								if(mode == workMode -1){
-									float r2[] = MyMath.toFloat(returnParam, 3, 1);
+									int len = (returnLength-1)/4;
+									float r2[] = MyMath.toFloat(returnParam, 2, len);
 									setText(idx, String.format("%f",r2[0]));
 								}else{
 									setMessage(mCtx.getString(R.string.quad_com_data_error));

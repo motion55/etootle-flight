@@ -73,7 +73,7 @@ public class PIDSettingActivity extends Activity {
 			edits[i*3 + 1] = params[i].i;
 			edits[i*3 + 2] = params[i].d;
 		}
-		buttons = new QuadParamSettingActivity.ParamButton(this, 19, 9, edits);
+		buttons = new QuadParamSettingActivity.ParamButton(this, 23, 9, edits);
 		buttons.append2layout(tl);
 	}
 	

@@ -50,6 +50,7 @@ void bsp_init(void)
         RCC_APB2Periph_USART1   |
         RCC_APB2Periph_SPI1     |
         RCC_APB2Periph_ADC1,ENABLE);
+    __enable_irq();
     //
     GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);
     //

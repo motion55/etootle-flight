@@ -240,6 +240,10 @@ int32_t refresher_jumpToApp(void)
     // +4因为第一个字是栈地址，第二个字才是复位向量的函数指针（注：不是函数地址）
     //(* ((void (*)(void))(MAP_FLASH_BASE_BYTE+4)) )();
     //NVIC_SetVectorTable(NVIC_VectTab_FLASH,(uint32_t)MAP_APP_BASE_BYTE);
+    __disable_irq();
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_SPI1, ENABLE);
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_SPI1, DISABLE);
+    __set_MSP(*(int32_t *)(MAP_APP_BASE_BYTE));
     int32_t pReset = *(int32_t *)(MAP_APP_BASE_BYTE+4);
     ((void (*)(void))(pReset))();
     //

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView 
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/scroll" 
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+
+<LinearLayout
+    android:id="@+id/quad_bootloader_layout"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/textBootloaderInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <TextView
+        android:id="@+id/textRemotePath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/quad_bootloader_bin_url" />
+
+        <EditText
+            android:id="@+id/editRemotePath"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text|textUri" />
+        
+    </LinearLayout>
+    
+        <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <TextView
+        android:id="@+id/textLocalPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/quad_bootloader_bin_path" />
+
+        <EditText
+        android:id="@+id/editLocalPath"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text|textUri" />
+        
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <Button
+        android:id="@+id/quad_bootloader_download"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/quad_bootloader_bin_downlaod" />
+        
+        <Button
+        android:id="@+id/quad_bootloader_update"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/quad_bootloader_bin_update" />
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>

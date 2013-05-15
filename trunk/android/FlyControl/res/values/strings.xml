@@ -84,9 +84,36 @@
     <string name="quad_com_timeout">Communication timeout!</string>
     <string name="quad_com_data_error">Communication data error!</string>
     <string name="quad_com_sucess">Communication success!</string>
+    <string name="quad_com_start">Communication start >>></string>
     <string name="quad_com_status">Status:  </string>
+    <string name="quad_param_x_fill">Horizontal extend</string>
+    <string name="quad_param_y_fill">Vertical extend</string>
+    <string name="quad_param_row_copy">Row Copy</string>
+    <string name="quad_param_row_paste">Row Paste</string>
     <string name="quad_confirm_write_flash">Are you sure want to write flash parameter?</string>
     <string name="quad_confirm_reset_flash">Are you sure want to reset flash parameter?</string>
+    <string name="quad_gather">Gather data</string>
+    <string name="quad_gather_data">Data</string>
+    <string name="quad_gather_data_source">Data source:</string>
+    <string name="quad_gather_sample_count">Sample count:</string>
+    <string name="quad_gather_sample_interval">Sample interval(ms):</string>
+    <string name="quad_gather_sample_once">Sample one time</string>
+    <string name="quad_gather_sample_more">Sample multiple time</string>
+    <string name="quad_gather_select_type">Select data type</string>
+    <string name="quad_gather_unknown_data">Unknown Data</string>
+    
+    <string name="quad_bootloader">Bootloader</string>
+    <string name="quad_bootloader_bin_url">URL:</string>
+    <string name="quad_bootloader_bin_downlaod">Download</string>
+    
+    <string name="quad_bootloader_bin_path">Path:</string>
+    <string name="quad_bootloader_bin_update">Update</string>
+    
+    <string name="quad_bootloader_file_not_exsit">File not exsit, download it first!</string>
+    <string name="quad_bootloader_download_start">File download start >>></string>
+    <string name="quad_bootloader_download_success">File download success!</string>
+    <string name="quad_bootloader_update_start">Firmware update start >>></string>
+    
     <string name="blue_no_device_paired">No devices have been paired!</string>
     <string name="blue_no_device_found">No devices found!</string>
     <string name="blue_connect_fail">Bluetooth connection fail!</string>
@@ -108,4 +135,65 @@
 	<string name="info_mail">lxyppc@gmail.com</string>
 	
 	<string name="menu_help">Help</string>
+	
+	<string-array name="quad_sensor_param_head">
+	   	<item>Calibration</item>
+    	<item>X</item>
+    	<item>Y</item>
+    	<item>Z</item>
+	</string-array>
+	
+	<string-array name="quad_sensor_param_names">
+	    <item>Acc Off</item>
+	    <item>Acc Gain</item>
+	    <item>Gyro Off</item>
+	    <item>Gyro Gain</item>
+	    <item>Mag Off</item>
+	    <item>Mag Gain</item>
+	</string-array>
+	
+	<string-array name="quad_horizon_param_head">
+	    <item>Horizon</item>
+    	<item>W</item>
+    	<item>X</item>
+    	<item>Y</item>
+    	<item>Z</item>
+    </string-array>
+    
+	<string-array name="quad_horizon_param_names">
+	    <item>Horizon</item>
+    </string-array>
+
+	<string-array name="quad_pid_param_head">
+	    <item>PID param</item>
+    	<item>P</item>
+    	<item>I</item>
+    	<item>D</item>
+    </string-array>
+    
+	<string-array name="quad_pid_param_names">
+	    <item>X(Roll)</item>
+	    <item>Y(Pitch)</item>
+	    <item>Z(Yaw)</item>
+    </string-array>
+    
+	<string-array name="quad_gather_data_head">
+	    <item> </item>
+    	<item>X</item>
+    	<item>Y</item>
+    	<item>Z</item>
+    </string-array>
+    
+	<string-array name="quad_gather_data_names">
+	    <item>Data</item>
+    </string-array>
+    
+	<string-array name="quad_gather_data_types">
+	    <item>Raw Acc</item>
+	    <item>Calibrated Acc</item>
+	    <item>Raw Gyro</item>
+	    <item>Calibrated Gyro</item>
+	    <item>Raw Mag</item>
+	    <item>Calibrated Mag</item>
+    </string-array>
 </resources>

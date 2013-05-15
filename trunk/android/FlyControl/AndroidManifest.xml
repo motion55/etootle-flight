@@ -10,6 +10,7 @@
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.BLUETOOTH"/>
 	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -52,6 +53,12 @@
         </activity>
         <activity
             android:name="com.lxyppc.flycontrol.HorizonSettingActivity" android:configChanges="orientation|keyboardHidden">
+        </activity>
+        <activity
+            android:name="com.lxyppc.flycontrol.GatherDataActivity" android:configChanges="orientation|keyboardHidden">
+        </activity>
+        <activity
+            android:name="com.lxyppc.flycontrol.QuadBootloaderActivity" android:configChanges="orientation|keyboardHidden">
         </activity>
     </application>
 </manifest>

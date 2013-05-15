@@ -8,16 +8,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TabHost.TabSpec;
 
@@ -25,6 +27,7 @@ public class QuadParamSettingActivity extends TabActivity {
 	private static final String SENSOR_TAB = "sensor_tab";
 	private static final String PID_TAB = "pid_tab";
 	private static final String HORIZON_TAB = "horizon_tab";
+	private static final String GATHER_TAB = "gather_tab";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,10 +53,19 @@ public class QuadParamSettingActivity extends TabActivity {
 		spec.setIndicator(getString(R.string.quad_horizon));
 		spec.setContent(intent);
 		host.addTab(spec);
+		
+		intent = new Intent().setClass(this, GatherDataActivity.class);
+		spec = host.newTabSpec(GATHER_TAB);
+		spec.setIndicator(getString(R.string.quad_gather));
+		spec.setContent(intent);
+		host.addTab(spec);
+		
+		
 		final int height = 45;
 		host.getTabWidget().getChildAt(0).getLayoutParams().height = height;
 		host.getTabWidget().getChildAt(1).getLayoutParams().height = height;
 		host.getTabWidget().getChildAt(2).getLayoutParams().height = height;
+		host.getTabWidget().getChildAt(3).getLayoutParams().height = height;
 	}
 	
 	protected void onDestroy(){
@@ -67,10 +79,146 @@ public class QuadParamSettingActivity extends TabActivity {
 		if(instance!=null)instance.setProgress(pos);
 	} 
 	
+	public static class ParamEdit{
+		private int mRow;
+		private int mCol;
+		private Context mCtx;
+		private EditText[][] mEdits;
+		private static final int IDX_BASE = 24520;
+		public int length = 0;
+		
+		ParamEdit(Context ctx, int row, int col){
+			mCtx = ctx;
+			mRow = row;
+			mCol = col;
+			length  = mRow * mCol;
+			mEdits = new EditText[row][col];
+			for(int i=0;i<mRow;i++){
+				for(int j=0;j<mCol;j++){
+					mEdits[i][j] = new EditText(ctx);
+					mEdits[i][j].setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_NUMBER_FLAG_SIGNED);
+					mEdits[i][j].setOnCreateContextMenuListener(mContextMenuListener);
+				}
+			}
+		}
+		
+		private static final int ROW_COPY = 1;
+		private static final int ROW_PASTE = 2;
+		private static final int ROW_X_EXTEND = 3;
+		private static final int ROW_Y_EXTEND = 4;
+		private static String[] clipBoard = null;
+		private View.OnCreateContextMenuListener mContextMenuListener = new View.OnCreateContextMenuListener(){
+			public void onCreateContextMenu(ContextMenu menu, View v,
+					ContextMenuInfo menuInfo) {
+				int row = -1;
+				int col = -1;
+				for(int i=0;i<mRow;i++){
+					for(int j=0;j<mCol;j++){
+						if(v == mEdits[i][j]){
+							row = i; col = j; break;
+						}
+					}
+					if(row>=0 || col>=0)break;
+				}
+				if(row>=0 && col>=0){
+					int id = IDX_BASE + row*mCol + col;
+					menu.add(ROW_COPY, id, Menu.NONE, R.string.quad_param_row_copy);
+					menu.add(ROW_PASTE, id, Menu.NONE, R.string.quad_param_row_paste);
+					menu.add(ROW_X_EXTEND, id, Menu.NONE, R.string.quad_param_x_fill);
+					menu.add(ROW_Y_EXTEND, id, Menu.NONE, R.string.quad_param_y_fill);
+					
+				}
+			}
+		};
+		
+		public void onContextItemSelected(MenuItem item){
+			int id = item.getItemId();
+			if(id>=IDX_BASE && id<IDX_BASE+mCol*mRow){
+				id -= IDX_BASE;
+				int col = id%mCol;
+				int row = id/mCol;
+				String v = mEdits[row][col].getText().toString();
+				switch(item.getGroupId()){
+				case ROW_COPY:
+				{
+					clipBoard = new String[mCol];
+					for(int i=0;i<mCol;i++){
+						clipBoard[i] = mEdits[row][i].getText().toString();
+					}
+				}
+					break;
+				case ROW_PASTE:
+					if(clipBoard != null){
+						int len = mCol;
+						if(len>clipBoard.length) len = clipBoard.length;
+						for(int i=0;i<len;i++){
+							mEdits[row][i].setText(clipBoard[i]);
+						}
+					}
+					break;
+				case ROW_X_EXTEND:
+					for(int i=0;i<mCol;i++){
+						mEdits[row][i].setText(v);
+					}
+					break;
+				case ROW_Y_EXTEND:
+					for(int i=0;i<mRow;i++){
+						mEdits[i][col].setText(v);
+					}
+					break;
+				}
+			}
+		}
+		
+		public EditText get(int idx){
+			int row = idx / mCol;
+			int col = idx % mCol;
+			return get(row,col);
+		}
+		
+		public EditText get(int row, int col){
+			return mEdits[row][col];
+		}
+		
+		public void append2layout(LinearLayout tl, int head, int name){
+			append2layout(tl, 
+					mCtx.getResources().getStringArray(head),
+					mCtx.getResources().getStringArray(name));
+		}
+		
+		public void append2layout(LinearLayout tl, String[] head, String[] name){
+			LinearLayout ll = new LinearLayout(mCtx);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			lp.weight = 2;
+			if(head.length == mCol+1){
+				for(int i=0;i<head.length;i++){
+					TextView v = new TextView(mCtx);
+					v.setText(head[i]);
+					ll.addView(v,lp);
+				}
+				tl.addView(ll);
+			}
+			if(name.length == mRow){
+				for(int i=0;i<name.length;i++){
+					ll = new LinearLayout(mCtx);
+					TextView v1 = new TextView(mCtx);
+					v1.setText(name[i]);
+					ll.addView(v1,lp);
+					for(int j=0;j<mCol;j++){
+						ll.addView(mEdits[i][j],lp);
+					}
+					tl.addView(ll);
+				}
+			}
+		}
+	}
+	
+	
+	
 	// class for the param button
 	public static class ParamButton{
 		private static int TIMEOUT_MS = 2000; // 2 seconds
-		ParamButton(Context ctx, int startPos, int count, EditText[] edits){
+		ParamButton(Context ctx, int startPos, int count, ParamEdit edits){
 			mCtx = ctx;
 			mStart = startPos;
 			mCount = count;
@@ -160,6 +308,7 @@ public class QuadParamSettingActivity extends TabActivity {
 			public void run() {
 				enable(false);
 				setProgress(0);
+				setMessage(mCtx.getString(R.string.quad_com_start));
 				switch(workMode){
 					case Protocol.Parameter.GET_RAM:
 					case Protocol.Parameter.GET_FLASH:
@@ -197,29 +346,28 @@ public class QuadParamSettingActivity extends TabActivity {
 						for(idx=0;idx<mCount;idx++){
 							byte[] param = new byte[]{(byte) workMode,(byte) (mStart+idx), 0, 0, 0, 0};
 							if(idx<mEdits.length){
-								String r = mEdits[idx].getText().toString();
+								String r = mEdits.get(idx).getText().toString();
 								
 								float[] f = new float[]{0.0f};
 								try{
 									f[0] = Float.parseFloat(r);
+									byte[] b = MyMath.toByte(f);
+									System.arraycopy(b, 0, param, 2, 4);
+									sendParam(param);
+									if(!waitResult()){
+										break;
+									}
+									int mode = returnParam[0];
+									if(mode<0)mode+=256;
+									if(mode == workMode -1){
+										int len = (returnLength-1)/4;
+										float r2[] = MyMath.toFloat(returnParam, 2, len);
+										setText(idx, String.format("%f",r2[0]));
+									}else{
+										setMessage(mCtx.getString(R.string.quad_com_data_error));
+										break;
+									}
 								}catch(NumberFormatException e){
-									
-								}
-								byte[] b = MyMath.toByte(f);
-								System.arraycopy(b, 0, param, 2, 4);
-								sendParam(param);
-								if(!waitResult()){
-									break;
-								}
-								int mode = returnParam[0];
-								if(mode<0)mode+=256;
-								if(mode == workMode -1){
-									int len = (returnLength-1)/4;
-									float r2[] = MyMath.toFloat(returnParam, 2, len);
-									setText(idx, String.format("%f",r2[0]));
-								}else{
-									setMessage(mCtx.getString(R.string.quad_com_data_error));
-									break;
 								}
 							}
 							setProgress(idx+1);
@@ -259,6 +407,7 @@ public class QuadParamSettingActivity extends TabActivity {
 		static int x = 0;
 		private void clicked(int id){
 			workMode = id;
+			setProgress(0);
 			if(id == Protocol.Parameter.WRITE_FLASH){
 				Dialog alertDialog = new AlertDialog.Builder(mCtx)
 				.setTitle(R.string.app_name)
@@ -297,7 +446,7 @@ public class QuadParamSettingActivity extends TabActivity {
 				private int mIdx;
 				private String mStr;
 				public void run() {
-					mEdits[mIdx].setText(mStr);
+					mEdits.get(mIdx).setText(mStr);
 				}
 			}
 			((Activity) mCtx).runOnUiThread(new MyRun(idx,text));
@@ -335,7 +484,6 @@ public class QuadParamSettingActivity extends TabActivity {
 					resetFlash.setEnabled(mEnable);
 				}
 			});
-			
 		}
 		private Context mCtx;
 		private Button getRam;
@@ -344,7 +492,7 @@ public class QuadParamSettingActivity extends TabActivity {
 		private Button setFlash;
 		private Button resetFlash;
 		private TextView info;
-		private EditText[] mEdits;
+		private ParamEdit mEdits;
 		private int mStart;
 		private int mCount;
 	}

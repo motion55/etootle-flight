@@ -64,7 +64,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.ButtonClicked{
-	private static final String PRE_NAME = "flycontrol";
+	public static final String PRE_NAME = "flycontrol";
 	public static final String TAG = "FLYC";
 	
 	ViewSettingActivity.ViewSetting mViewSetting = new ViewSettingActivity.ViewSetting();
@@ -351,8 +351,12 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	public static interface OnReturnMessage{
 		void onReturnMessage(String msg);
 	}
+	public static interface OnReturnVector{
+		void onReturnVector(byte type,float x,float y,float z);
+	}
 	private OnParameter onParameterL = null;
 	private OnReturnMessage onReturnMessageL = null;
+	private OnReturnVector  onReturnVectorL = null;
 	public class ControlSignal extends BinaryParser.Signals{
 		void printMessage(String msg){
 			for(int i=mInfoText.length-1;i>0;i--){
@@ -369,6 +373,9 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		}
 		void onParameter(byte[] param){
 			if(onParameterL != null) onParameterL.onParameter(param);
+		}
+		void onReturnVector(byte type,float x,float y,float z){
+			if(onReturnVectorL != null) onReturnVectorL.onReturnVector(type,x,y,z);
 		}
 	}
 	
@@ -416,6 +423,13 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
             	Intent i = new Intent(this, QuadParamSettingActivity.class);
             	mSendControlData = false;
 				this.startActivityForResult(i, R.id.action_quad_param);
+            }
+            	break;
+            case R.id.action_quad_bootloader:
+            {
+            	Intent i = new Intent(this, QuadBootloaderActivity.class);
+            	mSendControlData = false;
+				this.startActivityForResult(i, R.id.action_quad_bootloader);
             }
             	break;
 			case R.id.action_about:
@@ -529,6 +543,9 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
             	}
             	break;
             case R.id.action_quad_param:
+            	mSendControlData = true;
+            	break;
+            case R.id.action_quad_bootloader:
             	mSendControlData = true;
             	break;
          }
@@ -882,6 +899,10 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	
 	public static void setOnReturnMessageListener(OnReturnMessage l){
 		instance.onReturnMessageL = l;
+	}
+	
+	public static void setOnReturnVectorListener(OnReturnVector l){
+		instance.onReturnVectorL = l;
 	}
 	
 	@Override

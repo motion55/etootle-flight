@@ -1,0 +1,1 @@
+java -jar AndroidShot.jar -d -l -r 0.5 q.png

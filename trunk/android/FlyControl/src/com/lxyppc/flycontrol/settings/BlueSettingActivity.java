@@ -100,6 +100,7 @@ public class BlueSettingActivity extends Activity {
 		mBtnSearch.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				if(mBluetoothAdapter == null) return;
 				BlueSettingActivity.this.setProgressBarIndeterminateVisibility(true);
 				
 				BlueSettingActivity.this.findViewById(R.id.textNewBlueDevices).setVisibility(View.VISIBLE);
@@ -137,23 +138,23 @@ public class BlueSettingActivity extends Activity {
 		
 		if(mBluetoothAdapter == null){
 			Toast.makeText(this, getString(R.string.blue_not_valid), Toast.LENGTH_LONG).show();
-			this.finish();
-		}
-		
-		if(!mBluetoothAdapter.isEnabled()){
-			Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			BlueSettingActivity.this.startActivityForResult(enableIntent, REQUESTCODE_BLUETOOTH_ENABLE);
-		}
-		
-		Set<BluetoothDevice> pairedDevices = this.mBluetoothAdapter.getBondedDevices();
-		if (pairedDevices.size() > 0) {
-			findViewById(R.id.textPairedBlueDevices).setVisibility(View.VISIBLE);
-			for (final BluetoothDevice device : pairedDevices) {
-				add_item(this.mPairedDevices,blueString(device));
+			//this.finish();
+		}else{
+			if(!mBluetoothAdapter.isEnabled()){
+				Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+				BlueSettingActivity.this.startActivityForResult(enableIntent, REQUESTCODE_BLUETOOTH_ENABLE);
 			}
-		} else {
-			add_item(this.mPairedDevices,getString(R.string.blue_no_device_paired));
-			//mPairedDevicesArrayAdapter.add("No devices have been paired!");
+			
+			Set<BluetoothDevice> pairedDevices = this.mBluetoothAdapter.getBondedDevices();
+			if (pairedDevices.size() > 0) {
+				findViewById(R.id.textPairedBlueDevices).setVisibility(View.VISIBLE);
+				for (final BluetoothDevice device : pairedDevices) {
+					add_item(this.mPairedDevices,blueString(device));
+				}
+			} else {
+				add_item(this.mPairedDevices,getString(R.string.blue_no_device_paired));
+				//mPairedDevicesArrayAdapter.add("No devices have been paired!");
+			}
 		}
 		
 		
@@ -168,6 +169,7 @@ public class BlueSettingActivity extends Activity {
 		switch(pRequestCode) {
 			case REQUESTCODE_BLUETOOTH_ENABLE:
 				mPairedDevices.removeAllViewsInLayout();
+				if(mBluetoothAdapter == null) break;
 				Set<BluetoothDevice> pairedDevices = this.mBluetoothAdapter.getBondedDevices();
 				if (pairedDevices.size() > 0) {
 					findViewById(R.id.textPairedBlueDevices).setVisibility(View.VISIBLE);
@@ -216,10 +218,12 @@ public class BlueSettingActivity extends Activity {
 	private View.OnClickListener mDeviceClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View pView) {
-			BlueSettingActivity.this.mBluetoothAdapter.cancelDiscovery();
-			final String info = ((TextView) pView).getText().toString();
-			final String address = info.substring(info.length() - 17);
-			mEditMac.setText(address);
+			if(mBluetoothAdapter != null){
+				BlueSettingActivity.this.mBluetoothAdapter.cancelDiscovery();
+				final String info = ((TextView) pView).getText().toString();
+				final String address = info.substring(info.length() - 17);
+				mEditMac.setText(address);
+			}
 		}
 	};
 	

@@ -43,7 +43,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/quad_bootloader_bin_path" />
-
+        <TextView
+        android:id="@+id/textSDPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
         <EditText
         android:id="@+id/editLocalPath"
         android:layout_width="fill_parent"
@@ -70,6 +74,20 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/quad_bootloader_bin_update" />
+        
+        <Button
+        android:id="@+id/quad_bootloader_update_url"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/quad_bootloader_bin_update_url" />
+        
+        <Button
+        android:id="@+id/quad_bootloader_cancel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@android:string/cancel" />
     </LinearLayout>
 </LinearLayout>
 </ScrollView>

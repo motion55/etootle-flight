@@ -282,32 +282,32 @@ public class BinaryParser {
 	}
 	
 	
-	void cmd_getAttitudeQuaternion()
+	public void cmd_getAttitudeQuaternion()
 	{
 	    transmitFrame(Protocol.VERSION,Protocol.GET_ATTITUDE_QUATERNION,null,0);
 	}
 
-	void cmd_getTranslation()
+	public void cmd_getTranslation()
 	{
 	    transmitFrame(Protocol.VERSION,Protocol.GET_TRANSLATION,null,0);
 	}
 
-	void cmd_getAttitudeAngle()
+	public void cmd_getAttitudeAngle()
 	{
 	    transmitFrame(Protocol.VERSION,Protocol.GET_ATTITUDE_ANGLE,null,0);
 	}
 
-	void control_lockAttitude(byte[] param)
+	public void control_lockAttitude(byte[] param)
 	{
 	    transmitFrame(Protocol.VERSION,Protocol.LOCK_ATTITUDE,param,param.length);
 	}
 
-	void control_setMode(int mode)
+	public void control_setMode(int mode)
 	{
 	    transmitFrame(Protocol.VERSION,Protocol.SET_CONTROL_MODE,new byte[]{(byte)mode},1);
 	}
 
-	void control_lockThrottle_setThrottle(float[] throttle)
+	public void control_lockThrottle_setThrottle(float[] throttle)
 	{
 	    if(throttle.length != 4)
 	        return;
@@ -316,22 +316,22 @@ public class BinaryParser {
 	                  , t, t.length);
 	}
 
-	void control_sendHeartbeat()
+	public void control_sendHeartbeat()
 	{
 	    transmitFrame(Protocol.VERSION,Protocol.HEARTBEAT_SEND,null,0);
 	}
 
-	void cmd_getVector(byte type)
+	public void cmd_getVector(byte type)
 	{
 	    transmitFrame(Protocol.VERSION,Protocol.GET_VECTOR,new byte[]{type},1);
 	}
 
-	void cmd_getStatus(byte[] which)
+	public void cmd_getStatus(byte[] which)
 	{
 	    transmitFrame(Protocol.VERSION,Protocol.GET_STATUS,which,which.length);
 	}
 
-	void cmd_bootloadCmd(byte cmd, byte[] param)
+	public void cmd_bootloadCmd(byte cmd, byte[] param)
 	{
 	    byte[] t = new byte[param.length + 1];
 	    t[0] = cmd;
@@ -339,12 +339,12 @@ public class BinaryParser {
 	    transmitFrame(Protocol.VERSION,Protocol.BOOTLOADER_CMD,t,t.length);
 	}
 
-	void cmd_parameter(byte[] param)
+	public void cmd_parameter(byte[] param)
 	{
 	    transmitFrame(Protocol.VERSION,Protocol.PARAMETER,param,param.length);
 	}
 	
-	void cmd_raw_control(short button, short x1, short y1, short x2, short y2){
+	public void cmd_raw_control(short button, short x1, short y1, short x2, short y2){
 		short[] b = new short[]{button,x1,y1,x2,y2};
 		byte[] param = MyMath.toByte(b);
 		transmitFrame(Protocol.VERSION,Protocol.RAW_CONTROL_DATA, param,param.length);	

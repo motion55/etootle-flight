@@ -10,6 +10,7 @@
     <string name="camera_height">Camera Height:</string>
     <string name="text_info">Display text info</string>
     <string name="ctrl_v_pos">Position:</string>
+    <string name="ctrl_margin">Margin:</string>
     <string name="update_freq">Update Freq:</string>
     <string name="lock_attitude">Lock Attitude</string>
     <string name="left_throttle">Left throttle</string>
@@ -51,6 +52,8 @@
     <string name="blue_paired_device">Paired devices</string>
     <string name="blue_new_device">New devices</string>
     <string name="blue_pair">Pair</string>
+    
+    <string name="quad_about">About QuadCopter</string>
     <string name="quad_param">QuadCopter param</string>
     <string name="quad_sensor">Sensor</string>
     <string name="quad_pid">PID</string>
@@ -104,15 +107,26 @@
     
     <string name="quad_bootloader">Bootloader</string>
     <string name="quad_bootloader_bin_url">URL:</string>
-    <string name="quad_bootloader_bin_downlaod">Download</string>
-    
+    <string name="quad_bootloader_bin_downlaod">Download firmware</string>
     <string name="quad_bootloader_bin_path">Path:</string>
-    <string name="quad_bootloader_bin_update">Update</string>
-    
+    <string name="quad_bootloader_bin_update">Update local firmware</string>
+    <string name="quad_bootloader_bin_update_url">Update remote firmware</string>
     <string name="quad_bootloader_file_not_exsit">File not exsit, download it first!</string>
+    <string name="quad_bootloader_file_create_fail">Fail to create file!</string>
     <string name="quad_bootloader_download_start">File download start >>></string>
-    <string name="quad_bootloader_download_success">File download success!</string>
+    <string name="quad_bootloader_download_success">Firmware download success!</string>
     <string name="quad_bootloader_update_start">Firmware update start >>></string>
+    <string name="quad_bootloader_update_load_file_success">Firmware load success!</string>
+    <string name="quad_bootloader_update_load_file_fail">Load firmware fail!</string>
+    <string name="quad_bootloader_status_ready">Enter bootloader mode!</string>
+    <string name="quad_bootloader_status_app_ready">Bootloader is ready for update firmware!</string>
+    <string name="quad_bootloader_status_app_write">Start writing firmware!</string>
+    <string name="quad_bootloader_status_app_success">Firmware update success, entering new firmware!</string>
+    <string name="quad_bootloader_status_app_fail">Firmware update fail, please try again!</string>
+    <string name="quad_bootloader_status_user_cancel_update">Firmware update cancel by user!</string>
+    <string name="quad_bootloader_status_user_cancel_download">Firmware download cancel by user!</string>
+    
+    
     
     <string name="blue_no_device_paired">No devices have been paired!</string>
     <string name="blue_no_device_found">No devices found!</string>

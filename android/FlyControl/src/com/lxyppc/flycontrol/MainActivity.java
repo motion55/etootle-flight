@@ -715,6 +715,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 			
 			if(mBluetoothAdapter == null){
 				display_string(getString(R.string.blue_not_valid));
+				return;
 			}
 			
 			if(!mBluetoothAdapter.isEnabled()){

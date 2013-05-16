@@ -83,6 +83,14 @@
 	        android:alphabeticShortcut="@string/quad_bootloader" 
 	        android:icon="@android:drawable/ic_menu_preferences">
 	    </item>
+	    
+		<item
+	        android:id="@+id/action_quad_about"
+	        android:orderInCategory="100"
+	        android:title="@string/quad_about" 
+	        android:alphabeticShortcut="@string/quad_about" 
+	        android:icon="@android:drawable/ic_dialog_info">
+	    </item>
     </menu>
     </item>
 

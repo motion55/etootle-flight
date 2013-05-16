@@ -9,8 +9,9 @@
     <string name="camera_width">镜头宽度:</string>
     <string name="camera_height">镜头高度:</string>
     <string name="text_info">显示文本信息</string>
-    <string name="ctrl_v_pos">控件位置:</string>
-    <string name="update_freq">数据频率:</string>
+    <string name="ctrl_v_pos">摇杆位置:</string>
+    <string name="ctrl_margin">摇杆边距:</string>
+    <string name="update_freq">数据帧率:</string>
     <string name="lock_attitude">锁定油门控制</string>
     <string name="left_throttle">左手油门</string>
     <string name="attitude_sensitivity">灵敏度:</string>
@@ -51,6 +52,8 @@
     <string name="blue_paired_device">已配对设备</string>
     <string name="blue_new_device">新设备</string>
     <string name="blue_pair">配对</string>
+    
+    <string name="quad_about">关于四轴</string>
     <string name="quad_param">四轴参数</string>
     <string name="quad_sensor">传感器</string>
     <string name="quad_pid">PID</string>
@@ -89,6 +92,25 @@
     <string name="quad_gather_unknown_data">未知数据</string>
     
     <string name="quad_bootloader">刷新程序</string>
+    <string name="quad_bootloader_bin_url">URL:</string>
+    <string name="quad_bootloader_bin_downlaod">下载固件</string>
+    <string name="quad_bootloader_bin_path">本地路径:</string>
+    <string name="quad_bootloader_bin_update">更新本地固件</string>
+    <string name="quad_bootloader_bin_update_url">更新网络固件</string>
+    <string name="quad_bootloader_file_not_exsit">本地固件不存在,请先下载!</string>
+    <string name="quad_bootloader_file_create_fail">建立文件失败!</string>
+    <string name="quad_bootloader_download_start">固件下载开始 >>></string>
+    <string name="quad_bootloader_download_success">固件下载成功!</string>
+    <string name="quad_bootloader_update_start">固件更新开始 >>></string>
+    <string name="quad_bootloader_update_load_file_success">加载本地固件成功!</string>
+    <string name="quad_bootloader_update_load_file_fail">加载本地固件失败!</string>
+    <string name="quad_bootloader_status_ready">已经进入Bootloader模式!</string>
+    <string name="quad_bootloader_status_app_ready">下位机已经准备好刷程序!</string>
+    <string name="quad_bootloader_status_app_write">开始写入程序!</string>
+    <string name="quad_bootloader_status_app_success">程序更新完毕，即将运行新程序!</string>
+    <string name="quad_bootloader_status_app_fail">程序更新失败。请重新尝试!</string>
+    <string name="quad_bootloader_status_user_cancel_update">用户中断更新!</string>
+    <string name="quad_bootloader_status_user_cancel_download">用户中断下载!</string>
     
     <string name="blue_no_device_paired">没有已配对设备!</string>
     <string name="blue_no_device_found">没有发现设备!</string>

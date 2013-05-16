@@ -21,6 +21,7 @@ package com.lxyppc.flycontrol;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
 import android.util.Log;
@@ -50,6 +51,15 @@ public class MyMath {
 		return crc16(crc,data,data.length);
 	}
 	
+	public static float toFloat(byte[] data){
+		return toFloat(data,0);
+	}
+	public static float toFloat(byte[] data, int offset){
+		if(data.length-offset>3){
+			return toFloat(data, offset, 1)[0];
+		}
+		return 0f;
+	}
 	public static float[] toFloat(byte[] data, int offset, int count){
 		int l = (data.length - offset) / 4;
 		if(count>l)count = l;
@@ -69,6 +79,52 @@ public class MyMath {
 		//		break;
 		//	}
 	    //}
+		return r;
+	}
+	
+	public static int toInt(byte[] data){
+		return toInt(data,0);
+	}
+	public static int toInt(byte[] data, int offset){
+		if(data.length-offset>3){
+			return toInt(data, offset, 1)[0];
+		}
+		return 0;
+	}
+	public static int[] toInt(byte[] data, int offset, int count){
+		int l = (data.length - offset) / 4;
+		if(count>l)count = l;
+		int[] r = new int[count];
+		byte[] temp = new byte[data.length - offset];
+		System.arraycopy(data, offset, temp, 0, temp.length);
+		ByteBuffer byteBuf = ByteBuffer.wrap(temp);
+		byteBuf = byteBuf.order(null);
+		for(int i=0;i<count;i++){
+			r[i] = byteBuf.getInt(i*4);
+		}
+		return r;
+	}
+	
+	public static short toShort(byte[] data){
+		return toShort(data,0);
+	}
+	public static short toShort(byte[] data, int offset){
+		if(data.length-offset>3){
+			return toShort(data, offset, 1)[0];
+		}
+		return 0;
+	}
+	public static short[] toShort(byte[] data, int offset, int count){
+		int l = (data.length - offset) / 2;
+		if(count>l)count = l;
+		short[] r = new short[count];
+		byte[] temp = new byte[data.length - offset];
+		System.arraycopy(data, offset, temp, 0, temp.length);
+		ByteBuffer byteBuf = ByteBuffer.wrap(temp);
+		byteBuf = byteBuf.order(null);
+		for(int i=0;i<count;i++){
+			r[i] = byteBuf.getShort(i*2);
+		}
 		return r;
 	}
 	
@@ -98,6 +154,15 @@ public class MyMath {
 		byteBuf = byteBuf.order(null); 
 		ShortBuffer shortBuf = byteBuf.asShortBuffer();
 		shortBuf.put (data);
+		return byteArray; 
+	}
+	
+	public static byte[] toByte(int[] data){
+		byte byteArray[] = new byte[data.length*4];  
+		ByteBuffer byteBuf = ByteBuffer.wrap(byteArray); 
+		byteBuf = byteBuf.order(null); 
+		IntBuffer intBuf = byteBuf.asIntBuffer();
+		intBuf.put (data);
 		return byteArray; 
 	}
 	

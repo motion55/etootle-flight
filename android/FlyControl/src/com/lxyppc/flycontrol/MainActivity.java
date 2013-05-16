@@ -1,5 +1,7 @@
 package com.lxyppc.flycontrol;
 
+import com.lxyppc.flycontrol.settings.*;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -48,7 +50,6 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion; 
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.debug.Debug;
-
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -58,6 +59,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.opengl.GLES20;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,6 +68,8 @@ import android.widget.Toast;
 public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.ButtonClicked{
 	public static final String PRE_NAME = "flycontrol";
 	public static final String TAG = "FLYC";
+	public static int SCREEN_WIDTH = 320;
+	public static int SCREEN_HEIGHT = 240;
 	
 	ViewSettingActivity.ViewSetting mViewSetting = new ViewSettingActivity.ViewSetting();
 	NetSettingActivity.NetSetting mNetSetting = new NetSettingActivity.NetSetting();
@@ -116,6 +120,10 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
+		DisplayMetrics m = new DisplayMetrics(); 
+		getWindowManager().getDefaultDisplay().getMetrics(m);
+		SCREEN_WIDTH = m.widthPixels/2;
+		SCREEN_HEIGHT = m.heightPixels/2;
 		mViewSetting.restore(this, PRE_NAME);
 		mNetSetting.restore(this, PRE_NAME);
 		mBlueSetting.restore(this, PRE_NAME);
@@ -249,7 +257,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		scene.registerTouchArea(mBlueState);
 
 		/* Velocity control (left). */
-		final float x1 = 0;
+		final float x1 = mViewSetting.mCtrlMargin;
 		final float y1 = mViewSetting.mHeight - this.mOnScreenControlBaseTextureRegion.getHeight() - mViewSetting.mPosition;
 		mVelocityOnScreenControl = new AnalogOnScreenControl(x1, y1, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new IAnalogOnScreenControlListener() {
 			@Override
@@ -271,13 +279,14 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		mVelocityOnScreenControl.getControlBase().setAlpha(0.5f);
 		
 		mViewSetting.mCtrlHeight = (int)mOnScreenControlBaseTextureRegion.getHeight();
+		mViewSetting.mCtrlWidth = (int)mOnScreenControlBaseTextureRegion.getWidth();
 
 		scene.setChildScene(mVelocityOnScreenControl);
 
 
 		/* Rotation control (right). */
 		final float y2 = (this.mPlaceOnScreenControlsAtDifferentVerticalLocations) ? 0 : y1;
-		final float x2 = mViewSetting.mWidth - this.mOnScreenControlBaseTextureRegion.getWidth();
+		final float x2 = mViewSetting.mWidth - this.mOnScreenControlBaseTextureRegion.getWidth() - mViewSetting.mCtrlMargin;
 		mRotationOnScreenControl = new AnalogOnScreenControl(x2, y2, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new IAnalogOnScreenControlListener() {
 			@Override
 			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
@@ -354,9 +363,14 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	public static interface OnReturnVector{
 		void onReturnVector(byte type,float x,float y,float z);
 	}
+	public static interface OnBootloaderStatus{
+		void onBootloaderStatus(byte status,byte[] param);
+	}
+	
 	private OnParameter onParameterL = null;
 	private OnReturnMessage onReturnMessageL = null;
 	private OnReturnVector  onReturnVectorL = null;
+	private OnBootloaderStatus onBootloaderStatusL = null;
 	public class ControlSignal extends BinaryParser.Signals{
 		void printMessage(String msg){
 			for(int i=mInfoText.length-1;i>0;i--){
@@ -376,6 +390,9 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		}
 		void onReturnVector(byte type,float x,float y,float z){
 			if(onReturnVectorL != null) onReturnVectorL.onReturnVector(type,x,y,z);
+		}
+		void onBootloaderStatus(byte status,byte[] param){
+			if(onBootloaderStatusL != null) onBootloaderStatusL.onBootloaderStatus(status,param);
 		}
 	}
 	
@@ -430,6 +447,12 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
             	Intent i = new Intent(this, QuadBootloaderActivity.class);
             	mSendControlData = false;
 				this.startActivityForResult(i, R.id.action_quad_bootloader);
+            }
+            	break;
+            case R.id.action_quad_about:
+            {
+            	Intent i = new Intent(this, AboutQuad.class);
+            	this.startActivity(i);
             }
             	break;
 			case R.id.action_about:
@@ -904,6 +927,10 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	public static void setOnReturnVectorListener(OnReturnVector l){
 		instance.onReturnVectorL = l;
 	}
+	public static void setOnBootloaderStatusListener(OnBootloaderStatus l){
+		instance.onBootloaderStatusL = l;
+	}
+	
 	
 	@Override
 	protected void onDestroy() {

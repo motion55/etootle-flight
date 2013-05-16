@@ -28,34 +28,37 @@
         </activity>
         
         <activity
-            android:name="com.lxyppc.flycontrol.ViewSettingActivity">
+            android:name="com.lxyppc.flycontrol.settings.ViewSettingActivity">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.NetSettingActivity">
+            android:name="com.lxyppc.flycontrol.settings.NetSettingActivity">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.ButtonSettingActivity">
+            android:name="com.lxyppc.flycontrol.settings.ButtonSettingActivity">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.AxisSettingActivity">
+            android:name="com.lxyppc.flycontrol.settings.AxisSettingActivity">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.BlueSettingActivity">
+            android:name="com.lxyppc.flycontrol.settings.BlueSettingActivitygActivity">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.QuadParamSettingActivity" android:configChanges="orientation|keyboardHidden">
+            android:name="com.lxyppc.flycontrol.AboutQuad">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.SensorSettingActivity" android:configChanges="orientation|keyboardHidden">
+            android:name="com.lxyppc.flycontrol.settings.QuadParamSettingActivity" android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.PIDSettingActivity" android:configChanges="orientation|keyboardHidden">
+            android:name="com.lxyppc.flycontrol.settings.SensorSettingActivity" android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.HorizonSettingActivity" android:configChanges="orientation|keyboardHidden">
+            android:name="com.lxyppc.flycontrol.settings.PIDSettingActivity" android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
-            android:name="com.lxyppc.flycontrol.GatherDataActivity" android:configChanges="orientation|keyboardHidden">
+            android:name="com.lxyppc.flycontrol.settings.HorizonSettingActivity" android:configChanges="orientation|keyboardHidden">
+        </activity>
+        <activity
+            android:name="com.lxyppc.flycontrol.settings.GatherDataActivity" android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
             android:name="com.lxyppc.flycontrol.QuadBootloaderActivity" android:configChanges="orientation|keyboardHidden">

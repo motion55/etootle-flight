@@ -61,6 +61,7 @@ import android.opengl.GLES20;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -348,11 +349,27 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		return scene;
 	}
 	
+	private boolean mBackClicked = false;
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+			if(!mBackClicked){
+				display_string(getString(R.string.press_again_to_exit));
+				mBackClicked = true;
+				return true;
+			}
+        }else{
+        	mBackClicked = false;
+        }
+		return super.dispatchKeyEvent(event);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
 	
 	public static interface OnParameter{
 		void onParameter(byte[] param);

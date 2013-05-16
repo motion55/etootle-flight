@@ -4,6 +4,7 @@
     <string name="app_name">FlyControl</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="press_again_to_exit">Press again to exit</string>
     <string name="fps">FPS</string>
     <string name="axis_format">(%1$.2f, %2$.2f)</string>
     <string name="camera_width">Camera Width:</string>
@@ -125,8 +126,6 @@
     <string name="quad_bootloader_status_app_fail">Firmware update fail, please try again!</string>
     <string name="quad_bootloader_status_user_cancel_update">Firmware update cancel by user!</string>
     <string name="quad_bootloader_status_user_cancel_download">Firmware download cancel by user!</string>
-    
-    
     
     <string name="blue_no_device_paired">No devices have been paired!</string>
     <string name="blue_no_device_found">No devices found!</string>

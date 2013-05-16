@@ -4,6 +4,7 @@
     <string name="app_name">飞控模拟器</string>
     <string name="action_settings">设置</string>
     <string name="hello_world">Hello world!</string>
+    <string name="press_again_to_exit">再按一次退出程序</string>
     <string name="fps">帧率</string>
     <string name="axis_format">(%1$.2f, %2$.2f)</string>
     <string name="camera_width">镜头宽度:</string>

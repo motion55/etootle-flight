@@ -60,6 +60,30 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_info" />
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/textStatusDuration"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/quad_status_duration" />
+
+    <SeekBar
+        android:id="@+id/seekStatusDuration"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    	android:layout_weight="1"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.7"
+        android:text=" " />
+	</LinearLayout>    
+    
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >

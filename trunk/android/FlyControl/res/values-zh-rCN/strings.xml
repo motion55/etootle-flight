@@ -9,11 +9,11 @@
     <string name="axis_format">(%1$.2f, %2$.2f)</string>
     <string name="camera_width">镜头宽度:</string>
     <string name="camera_height">镜头高度:</string>
-    <string name="text_info">显示文本信息</string>
+    <string name="text_info">显示四轴状态</string>
     <string name="ctrl_v_pos">摇杆位置:</string>
     <string name="ctrl_margin">摇杆边距:</string>
     <string name="update_freq">数据帧率:</string>
-    <string name="lock_attitude">锁定油门控制</string>
+    <string name="lock_attitude">锁定姿态控制</string>
     <string name="left_throttle">左手油门</string>
     <string name="attitude_sensitivity">灵敏度:</string>
     <string name="param_setting">参数设置</string>
@@ -112,6 +112,8 @@
     <string name="quad_bootloader_status_app_fail">程序更新失败。请重新尝试!</string>
     <string name="quad_bootloader_status_user_cancel_update">用户中断更新!</string>
     <string name="quad_bootloader_status_user_cancel_download">用户中断下载!</string>
+    <string name="quad_swtich_status">显示/隐藏状态</string>
+    <string name="quad_status_duration">状态刷新周期(ms):</string>
     
     <string name="blue_no_device_paired">没有已配对设备!</string>
     <string name="blue_no_device_found">没有发现设备!</string>
@@ -131,7 +133,7 @@
 	<string name="menu_help">帮助</string>
 	
 	<string-array name="quad_sensor_param_head">
-	   	<item>校正值</item>
+	   	<item>校正参数</item>
     	<item>X</item>
     	<item>Y</item>
     	<item>Z</item>
@@ -182,5 +184,13 @@
 	    <item>陀螺仪校正值</item>
 	    <item>罗盘原始值</item>
 	    <item>罗盘校正值</item>
+    </string-array>
+    
+		<string-array name="quad_status_names">
+	    <item>电池电压:</item>
+	    <item>    电机1:</item>
+	    <item>    电机2:</item>
+	    <item>    电机3:</item>
+	    <item>    电机4:</item>
     </string-array>
 </resources>

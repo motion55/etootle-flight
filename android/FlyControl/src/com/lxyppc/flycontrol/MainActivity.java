@@ -93,8 +93,10 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	private AnimatedSprite mBlueState;
 
 	private Font mFont;
-	private Text mLeftText;
-	private Text mRightText;
+	//private Text mLeftText;
+	//private Text mRightText;
+	private Text[] mStatusText = new Text[5];
+	private String[] mStatusName  = null;
 	private Font[] mInfoFont = new Font[6];
 	private Text[] mInfoText = new Text[6];
 	private float mInitFontSize = 14f;
@@ -149,6 +151,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		
 		mBtnGroup.setButtonListener(this);
 		instance = this;
+		mStatusName = this.getResources().getStringArray(R.array.quad_status_names);
 		return engineOptions;
 	}
     
@@ -264,7 +267,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 			@Override
 			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
 				//physicsHandler.setVelocity(pValueX * 100, pValueY * 100);
-				mLeftText.setText(String.format("(%.2f,%.2f)", pValueX, pValueY));
+				//mLeftText.setText(String.format("(%.2f,%.2f)", pValueX, pValueY));
 				mX1 = pValueX;
 				mY1 = pValueY;
 				//sendControlState(pValueX, pValueY, mRotationOnScreenControl.getX(), mRotationOnScreenControl.getY());
@@ -296,7 +299,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 				//} else {
 				//	face.setRotation(MathUtils.radToDeg((float)Math.atan2(pValueX, -pValueY)));
 				//}
-				mRightText.setText(String.format(getString(R.string.axis_format), pValueX, pValueY));
+				//mRightText.setText(String.format(getString(R.string.axis_format), pValueX, pValueY));
 				mX2 = pValueX;
 				mY2 = pValueY;
 				//sendControlState(mVelocityOnScreenControl.getX(), mVelocityOnScreenControl.getY(),pValueX, pValueY);
@@ -314,8 +317,8 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		
 		
 		final Text fpsText = new Text(0, 0, this.mFont, getString(R.string.fps)+":", 64, this.getVertexBufferObjectManager());
-		mLeftText = new Text(0, 20, this.mFont, "(0.00,0.00)", 64, this.getVertexBufferObjectManager());
-		mRightText = new Text(mViewSetting.mWidth/2, 20, this.mFont, "(0.00,0.00)", 64, this.getVertexBufferObjectManager());
+		//mLeftText = new Text(0, 20, this.mFont, "(0.00,0.00)", 64, this.getVertexBufferObjectManager());
+		//mRightText = new Text(mViewSetting.mWidth/2, 20, this.mFont, "(0.00,0.00)", 64, this.getVertexBufferObjectManager());
 		float init_text_pos = mViewSetting.mHeight - mInitFontSize - 1;
 		float dXpos = (mViewSetting.mWidth/3 - mViewSetting.mWidth/6)/mInfoText.length/2;
 		for(int i=0;i<mInfoText.length;i++){
@@ -325,11 +328,15 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 			init_text_pos -= mInitFontSize - i*mDeltaFontSize;
 		}
 		
+		for(int i=0;i<mStatusText.length;i++){
+			mStatusText[i] = new Text(mViewSetting.mWidth/2 - 40, 18*i, this.mFont, "", 64, this.getVertexBufferObjectManager());
+			scene.attachChild(mStatusText[i]);
+		}
 		
 		if(mViewSetting.mTextInfo){
 			scene.attachChild(fpsText);
-			scene.attachChild(mLeftText);
-			scene.attachChild(mRightText);
+			//scene.attachChild(mLeftText);
+			//scene.attachChild(mRightText);
 		}
 		
 		scene.registerUpdateHandler(new TimerHandler(1 / (float)mViewSetting.mFreq, true, new ITimerCallback() {
@@ -410,6 +417,23 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		}
 		void onBootloaderStatus(byte status,byte[] param){
 			if(onBootloaderStatusL != null) onBootloaderStatusL.onBootloaderStatus(status,param);
+		}
+		void onReturnStatus(byte which,byte[] value){
+			if(mStatusName == null || mStatusName.length<5){
+				mStatusName = new String[]{"","","","",""};
+			}
+			switch(which){
+			case Protocol.Status.BATERY_VOLTAGE:
+				float vol = MyMath.toFloat(value);
+				mStatusText[0].setText(mStatusName[0] + String.format("%.2f", vol));
+				break;
+			case Protocol.Status.CURRENT_THROTTLE:
+				float[] thro = MyMath.toFloat(value, 0, 4);
+				for(int i=0;i<thro.length;i++){
+					mStatusText[i+1].setText(mStatusName[i+1] + String.format("%.2f", thro[i]));
+				}
+				break;
+			}
 		}
 	}
 	
@@ -547,6 +571,9 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
             		mViewSetting.fromIntent(data);
             		mViewSetting.save(this, PRE_NAME);
             		mBtnGroup.update(this.mViewSetting.mLockAttitude);
+            		for(int i=0;i<mStatusText.length;i++){
+                		mStatusText[i].setVisible(mViewSetting.mTextInfo);
+                	}
             	}
             	break;
             case R.id.action_net_settings:
@@ -818,6 +845,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	protected boolean mSendControlData = true;
 	protected boolean mRunning = true;
 	protected Object mDataSig = new Object();
+	private long mLastStatusTime = 0;
 	protected Thread mDataProcessor = new Thread(){
 		@Override
 		public void run() {
@@ -828,6 +856,13 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 					}
 					if(mSendControlData){
 						sendControlState(mX1,mY1,mX2,mY2);
+					}
+					if(mViewSetting.mTextInfo){
+						long cur = System.currentTimeMillis();
+						if(cur - mLastStatusTime > mViewSetting.getDuration()){
+							mBinaryParser.cmd_getStatus(new byte[]{Protocol.Status.BATERY_VOLTAGE, Protocol.Status.CURRENT_THROTTLE});
+							mLastStatusTime = cur;
+						}
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();

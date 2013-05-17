@@ -24,6 +24,8 @@ public class ViewSettingActivity extends Activity {
 	
 	private TextView mTextFreq;
 	private SeekBar mSeekBarFreq;
+	private TextView mTextStatusDuration;
+	private SeekBar mSeekBarStatusDuration;
 	private TextView mTextSensitivity;
 	private SeekBar mSeekBarSensitivity;
 	private EditText mEditWidth;
@@ -39,6 +41,9 @@ public class ViewSettingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_setting);
 		//addPreferencesFromResource(R.xml.view_setting);
+
+		mTextStatusDuration = (TextView)this.findViewById(R.id.textStatusDuration);
+		mSeekBarStatusDuration = (SeekBar)this.findViewById(R.id.seekStatusDuration);
 		mTextVPos = (TextView)this.findViewById(R.id.textVPos);
 		mSeekBarVPos = (SeekBar)this.findViewById(R.id.seekVPos);
 		mTextMargin = (TextView)this.findViewById(R.id.textMargin);
@@ -70,6 +75,8 @@ public class ViewSettingActivity extends Activity {
 		mCheckLockAttitude.setChecked(oldSetting.mLockAttitude);
 		mCheckLeftThrottle.setChecked(oldSetting.mLeftThrottle);
 		
+		mSeekBarStatusDuration.setMax(ViewSetting.DURATION_MAX - ViewSetting.DURATION_OFFSET);
+		mSeekBarStatusDuration.setProgress(oldSetting.mStatusDuration);
 		
 		mSeekBarFreq.setMax(100);
 		mSeekBarFreq.setProgress(oldSetting.mFreq);
@@ -77,10 +84,26 @@ public class ViewSettingActivity extends Activity {
 		mSeekBarSensitivity.setMax(100);
 		mSeekBarSensitivity.setProgress(oldSetting.mSensitivity);
 		
+		mTextStatusDuration.setText(getString(R.string.quad_status_duration) + oldSetting.getDuration());
 		mTextVPos.setText(getString(R.string.ctrl_v_pos) + oldSetting.mPosition);
 		mTextMargin.setText(getString(R.string.ctrl_margin) + oldSetting.mCtrlMargin);
 		mTextFreq.setText(getString(R.string.update_freq) + oldSetting.mFreq);
 		mTextSensitivity.setText(getString(R.string.attitude_sensitivity) + String.format("%.4f", oldSetting.sensitivity()));
+		
+		mSeekBarStatusDuration.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onStopTrackingTouch(SeekBar arg0) {
+			}
+			@Override
+			public void onStartTrackingTouch(SeekBar arg0) {
+			}
+			@Override
+			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+				oldSetting.mStatusDuration = arg1;
+				mTextStatusDuration.setText(
+						ViewSettingActivity.this.getString(R.string.quad_status_duration) + oldSetting.getDuration());
+			}
+		});
 		
 		mSeekBarVPos.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
 			@Override
@@ -154,6 +177,7 @@ public class ViewSettingActivity extends Activity {
 				s.mCtrlHeight = oldSetting.mCtrlHeight;
 				s.mCtrlWidth = oldSetting.mCtrlWidth;
 				s.mFreq = mSeekBarFreq.getProgress();
+				s.mStatusDuration = mSeekBarStatusDuration.getProgress();
 				if(s.mFreq <= 0) s.mFreq = 1;
 				s.mSensitivity = mSeekBarSensitivity.getProgress();
 				s.toIntent(i);
@@ -176,6 +200,9 @@ public class ViewSettingActivity extends Activity {
 		public static final int DEF_POSITION = 30;
 		public static final int DEF_FREQ = 30;
 		public static final int DEF_SENSITIVITY = 50;
+		public static final int DURATION_MAX = 2000;
+		public static final int DURATION_OFFSET = 50;
+		public static final int DEF_DURATION = 1000 - DURATION_OFFSET;
 		public int mWidth;
 		public int mHeight;
 		public int mPosition;
@@ -187,6 +214,7 @@ public class ViewSettingActivity extends Activity {
 		public int mCtrlWidth;
 		public int mCtrlMargin;
 		public int mSensitivity;
+		public int mStatusDuration;
 		public ViewSetting(){}
 
 		public void fromIntent(Intent i){
@@ -199,6 +227,7 @@ public class ViewSettingActivity extends Activity {
 			mPosition = b.getInt("ctrl_postition", DEF_POSITION);
 			mCtrlMargin = b.getInt("ctrl_margin", DEF_MARGIN);
 			mFreq = b.getInt("update_freq", DEF_FREQ);
+			mStatusDuration = b.getInt("status_duration", DEF_DURATION);
 			mSensitivity = b.getInt("attitude_sensitivity", DEF_SENSITIVITY);
 			mLockAttitude = b.getBoolean("lockattitude", false);
 			mLeftThrottle = b.getBoolean("leftthrottle", false);
@@ -216,6 +245,7 @@ public class ViewSettingActivity extends Activity {
 			i.putExtra("lockattitude", mLockAttitude);
 			i.putExtra("leftthrottle", mLeftThrottle);
 			i.putExtra("attitude_sensitivity", mSensitivity);
+			i.putExtra("status_duration", mStatusDuration);
 		}
 		
 		public void save(Context context, String preferencesName){
@@ -230,6 +260,7 @@ public class ViewSettingActivity extends Activity {
 			editor.putInt("lockattitude", mLockAttitude ? 1 : 0);
 			editor.putInt("leftthrottle", mLeftThrottle ? 1 : 0);
 			editor.putInt("attitude_sensitivity", mSensitivity);
+			editor.putInt("status_duration", mStatusDuration);
 			editor.commit();
 		}
 		
@@ -244,6 +275,11 @@ public class ViewSettingActivity extends Activity {
 			mLockAttitude = cfg.getInt("lockattitude", 0) != 0;
 			mLeftThrottle = cfg.getInt("leftthrottle", 0) != 0;
 			mSensitivity = cfg.getInt("attitude_sensitivity", DEF_SENSITIVITY);
+			mStatusDuration = cfg.getInt("status_duration", DEF_DURATION);
+		}
+		
+		public long getDuration(){
+			return mStatusDuration + DURATION_OFFSET;
 		}
 		
 		public static float sensitivity(int val){

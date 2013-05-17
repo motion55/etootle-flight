@@ -1,1 +1,1 @@
-java -jar AndroidShot.jar -d -l -r 0.5 q.png
+java -jar AndroidShot.jar -d -l -r 0.5 -b "D:\tools\android\adt-bundle-windows-x86-20130219\sdk\platform-tools\adb.exe" q.png

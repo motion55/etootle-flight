@@ -187,10 +187,10 @@
     </string-array>
     
 		<string-array name="quad_status_names">
-	    <item>电池电压:</item>
-	    <item>    电机1:</item>
-	    <item>    电机2:</item>
-	    <item>    电机3:</item>
-	    <item>    电机4:</item>
+	    <item>电池电压 :</item>
+	    <item>电   机1  :</item>
+	    <item>电   机2  :</item>
+	    <item>电   机3  :</item>
+	    <item>电   机4  :</item>
     </string-array>
 </resources>

@@ -1,5 +1,6 @@
 package com.lxyppc.flycontrol.settings;
 
+import com.lxyppc.flycontrol.MyMath;
 import com.lxyppc.flycontrol.R;
 import android.app.Activity;
 import android.content.Context;
@@ -41,7 +42,7 @@ public class NetSettingActivity extends Activity {
 				Intent i = new Intent();
 				NetSetting s = new NetSetting();
 				s.mIP = mEditIP.getText().toString();
-				s.mPort = Integer.parseInt(mEditPort.getText().toString());
+				s.mPort = MyMath.toInt(mEditPort.getText().toString());
 				s.mConnectServer = mCheckConnectServer.isChecked();
 				s.toIntent(i);
 				NetSettingActivity.this.setResult(R.id.net_setting_ok, i);

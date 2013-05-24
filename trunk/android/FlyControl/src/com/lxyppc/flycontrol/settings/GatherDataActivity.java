@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lxyppc.flycontrol.MainActivity;
+import com.lxyppc.flycontrol.MyMath;
 import com.lxyppc.flycontrol.Protocol;
 import com.lxyppc.flycontrol.R;
 
@@ -142,16 +143,8 @@ public class GatherDataActivity extends Activity {
 	}
 	
 	public void get_setting(){
-		try{
-			mGatherSetting.mSampleCount = Integer.parseInt(mSampleTime.getText().toString());
-		}catch(NumberFormatException e){
-			mGatherSetting.mSampleCount = GatherSetting.DEF_COUNT;
-		}
-		try{
-			mGatherSetting.mSampleInterval = Integer.parseInt(mSampleInterval.getText().toString());
-		}catch(NumberFormatException e){
-			mGatherSetting.mSampleInterval = GatherSetting.DEF_INTERVAL;
-		}
+		mGatherSetting.mSampleCount = MyMath.toInt(mSampleTime.getText().toString(),GatherSetting.DEF_COUNT);
+		mGatherSetting.mSampleInterval = MyMath.toInt(mSampleInterval.getText().toString(),GatherSetting.DEF_INTERVAL);
 	}
 	
 	public boolean onContextItemSelected(MenuItem item) {

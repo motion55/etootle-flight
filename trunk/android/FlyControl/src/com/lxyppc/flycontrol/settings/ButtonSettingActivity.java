@@ -1,5 +1,6 @@
 package com.lxyppc.flycontrol.settings;
 
+import com.lxyppc.flycontrol.MyMath;
 import com.lxyppc.flycontrol.R;
 import android.app.Activity;
 import android.content.Context;
@@ -108,8 +109,8 @@ public class ButtonSettingActivity extends Activity {
 				s.mAdjMode = adjMode.isChecked();
 				for(int i=0;i<mControls.length;i++){
 					s.mButtonSettings[i].mEnable = mControls[i].enable.isChecked();
-					s.mButtonSettings[i].x = Integer.parseInt(mControls[i].x.getText().toString());
-					s.mButtonSettings[i].y = Integer.parseInt(mControls[i].y.getText().toString());
+					s.mButtonSettings[i].x = MyMath.toInt(mControls[i].x.getText().toString(),-1);
+					s.mButtonSettings[i].y = MyMath.toInt(mControls[i].y.getText().toString(),-1);
 					s.mButtonSettings[i].value = mControls[i].value.getText().toString();
 				}
 				s.toIntent(intent);

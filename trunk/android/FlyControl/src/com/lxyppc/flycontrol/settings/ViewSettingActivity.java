@@ -2,6 +2,7 @@ package com.lxyppc.flycontrol.settings;
 
 import com.lxyppc.flycontrol.MainActivity;
 import com.lxyppc.flycontrol.R;
+import com.lxyppc.flycontrol.MyMath;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -167,8 +168,8 @@ public class ViewSettingActivity extends Activity {
 			public void onClick(View arg0) {
 				Intent i = new Intent();
 				ViewSetting s = new ViewSetting();
-				s.mWidth = Integer.parseInt(mEditWidth.getText().toString());
-				s.mHeight = Integer.parseInt(mEditHeight.getText().toString());
+				s.mWidth = MyMath.toInt(mEditWidth.getText().toString());
+				s.mHeight = MyMath.toInt(mEditHeight.getText().toString());
 				s.mTextInfo = mCheckTextInfo.isChecked();
 				s.mLockAttitude = mCheckLockAttitude.isChecked();
 				s.mLeftThrottle = mCheckLeftThrottle.isChecked();

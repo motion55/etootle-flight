@@ -181,4 +181,18 @@ public class MyMath {
 		}
 		Log.i("FLYC", desc + ": " + t);
 	}
+	
+	public static int toInt(String str) {
+		return toInt(str,0);
+	}
+	
+	public static int toInt(String str, int def) {
+		int r;
+		try{
+			r = Integer.parseInt(str);
+		} catch(NumberFormatException e){
+			r = def;
+		}
+		return r;
+	}
 }

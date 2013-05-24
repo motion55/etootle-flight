@@ -1,5 +1,6 @@
 package com.lxyppc.flycontrol.settings;
 
+import com.lxyppc.flycontrol.MyMath;
 import com.lxyppc.flycontrol.R;
 
 import android.app.Activity;
@@ -58,14 +59,14 @@ public class AxisSettingActivity extends Activity {
 			public void onClick(View arg0) {
 				Intent i = new Intent();
 				AxisSetting s = new AxisSetting();
-				s.mLeftXScale = Integer.parseInt(mX1S.getText().toString());
-				s.mLeftXOffset = Integer.parseInt(mX1O.getText().toString());
-				s.mLeftYScale = Integer.parseInt(mY1S.getText().toString());
-				s.mLeftYOffset = Integer.parseInt(mY1O.getText().toString());
-				s.mRightXScale = Integer.parseInt(mX2S.getText().toString());
-				s.mRightXOffset = Integer.parseInt(mX2O.getText().toString());
-				s.mRightYScale = Integer.parseInt(mY2S.getText().toString());
-				s.mRightYOffset = Integer.parseInt(mY2O.getText().toString());
+				s.mLeftXScale = MyMath.toInt(mX1S.getText().toString(),2000);
+				s.mLeftXOffset = MyMath.toInt(mX1O.getText().toString());
+				s.mLeftYScale = MyMath.toInt(mY1S.getText().toString(),2000);
+				s.mLeftYOffset = MyMath.toInt(mY1O.getText().toString());
+				s.mRightXScale = MyMath.toInt(mX2S.getText().toString(),2000);
+				s.mRightXOffset = MyMath.toInt(mX2O.getText().toString());
+				s.mRightYScale = MyMath.toInt(mY2S.getText().toString(),2000);
+				s.mRightYOffset = MyMath.toInt(mY2O.getText().toString());
 				s.toIntent(i);
 				AxisSettingActivity.this.setResult(R.id.axis_setting_ok, i);
 				AxisSettingActivity.this.finish();

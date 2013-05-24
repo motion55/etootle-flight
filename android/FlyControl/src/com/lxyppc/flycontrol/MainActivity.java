@@ -95,6 +95,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	private Font mFont;
 	//private Text mLeftText;
 	//private Text mRightText;
+	private Font   mStatusFont;
 	private Text[] mStatusText = new Text[5];
 	private String[] mStatusName  = null;
 	private Font[] mInfoFont = new Font[6];
@@ -170,6 +171,9 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		
 		this.mFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 16);
 		this.mFont.load();
+		
+		mStatusFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 12);
+		mStatusFont.load();
 		
 		for(int i=0;i<mInfoFont.length;i++){
 		this.mInfoFont[i] = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 
@@ -329,7 +333,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 		}
 		
 		for(int i=0;i<mStatusText.length;i++){
-			mStatusText[i] = new Text(mViewSetting.mWidth/2 - 40, 18*i, this.mFont, "", 64, this.getVertexBufferObjectManager());
+			mStatusText[i] = new Text(mViewSetting.mWidth/2 - 40, 14*i, mStatusFont, "", 64, this.getVertexBufferObjectManager());
 			scene.attachChild(mStatusText[i]);
 		}
 		
@@ -425,12 +429,12 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 			switch(which){
 			case Protocol.Status.BATERY_VOLTAGE:
 				float vol = MyMath.toFloat(value);
-				mStatusText[0].setText(mStatusName[0] + String.format("%.2f", vol));
+				mStatusText[0].setText(mStatusName[0] + String.format(" %.2f V", vol));
 				break;
 			case Protocol.Status.CURRENT_THROTTLE:
 				float[] thro = MyMath.toFloat(value, 0, 4);
 				for(int i=0;i<thro.length;i++){
-					mStatusText[i+1].setText(mStatusName[i+1] + String.format("%.2f", thro[i]));
+					mStatusText[i+1].setText(mStatusName[i+1] + String.format(" %.2f", thro[i]));
 				}
 				break;
 			}
@@ -439,7 +443,7 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d("XXXX", "item: " + item.getItemId() + item.getTitle());
+		//Log.d("XXXX", "item: " + item.getItemId() + item.getTitle());
 	    switch (item.getItemId()) {
 			case R.id.action_view_settings:
 			{

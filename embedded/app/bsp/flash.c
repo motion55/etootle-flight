@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -29,7 +29,12 @@ int32_t flash_write(const uint32_t * target,const uint32_t * source,int32_t leng
 
 int32_t flash_init(void)
 {
+#ifndef NO_BOOTLOADER
     NVIC_SetVectorTable(NVIC_VectTab_FLASH,(uint32_t)0x4000);
+#else
+#warning vector not set when compile without bootloader
+    NVIC_SetVectorTable(NVIC_VectTab_FLASH,(uint32_t)0x0000);
+#endif
     return 0;
 }
 

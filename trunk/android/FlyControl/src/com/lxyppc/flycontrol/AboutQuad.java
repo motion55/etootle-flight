@@ -2,6 +2,7 @@ package com.lxyppc.flycontrol;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 public class AboutQuad extends Activity{
@@ -14,6 +15,7 @@ public class AboutQuad extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about_web_view);
 		WebView wv = (WebView)findViewById(R.id.about_web_view);
+		wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 		wv.loadUrl("http://www.etootle.com/product/4xaircraft/4x_version_info.html");
 	}
 }

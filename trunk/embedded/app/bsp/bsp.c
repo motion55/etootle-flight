@@ -66,8 +66,11 @@ void bsp_init(void)
     if(rs != 0)
         while(1);
     rf_startReceive();
-    //
+#ifndef USE_DMP
     if(mpu6050_init() != 0)
+#else
+    if(mpu6050_dmp_init() != 0)
+#endif
         while(1);
     //if(hmc5883_init() != 0)
     //    while(1);

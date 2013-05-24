@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -31,5 +31,6 @@ void attitude_inputGyr(const float gyr[3]);
 void attitude_inputMag(const float mag[3]);
 const quaternion * attitude_getAttitude(void);
 void attitude_mixGyrAccMag(void);
+void attitude_mixDMPResult(float w, float x, float y, float z);
 
 #endif // __FILE_ATTITUDE_INTERFACE_H__

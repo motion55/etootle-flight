@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -24,6 +24,7 @@
 #include "bsp/hmc5883.h"
 #include "app/attitude/interface.h"
 #include "sensor.h"
+#include "inv_mpu_dmp_motion_driver.h"
 
 void sensor_init(void);
 void sensor_checkEvent(void);
@@ -37,9 +38,10 @@ void sensor_getCalibratedMag(float mag[3]);
 void sensor_init(void)
 {
 }
-
+#define QUAT_SENS	1073741824.f
 void sensor_checkEvent(void)
 {
+#ifndef USE_DMP
     if(mpu6050_dataIsReady())
     {
         float acc[3],gyr[3];
@@ -53,6 +55,23 @@ void sensor_checkEvent(void)
         //
         attitude_mixGyrAccMag();
     }
+#else
+    if( mpu6050_DMPdataIsReady() )
+    {
+        short gyro[3], accel[3], sensors;
+        unsigned char more;
+        long quat[4];
+        unsigned long timestamp = 0;
+        if ( 0 == dmp_read_fifo( gyro, accel, quat, &timestamp, &sensors, &more ) ){
+            float w,x,y,z;
+            w = (float)quat[0] / QUAT_SENS;
+            x = (float)quat[1] / QUAT_SENS;
+            y = (float)quat[2] / QUAT_SENS;
+            z = (float)quat[3] / QUAT_SENS;
+            attitude_mixDMPResult(w,x,y,z);
+        }
+    }
+#endif
     //
     /*
     if(hmc5883_isDataReady())

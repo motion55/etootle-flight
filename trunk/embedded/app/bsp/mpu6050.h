@@ -1,4 +1,4 @@
-﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
+//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
 //         ========圆点博士微型四轴飞行器配套程序声明========
 // 
 // 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
@@ -32,7 +32,9 @@ enum
 };
 
 int32_t mpu6050_init(void);
+int32_t mpu6050_dmp_init(void);
 int32_t mpu6050_dataIsReady(void);
+int32_t mpu6050_DMPdataIsReady(void);
 int32_t mpu6050_read(void);
 int32_t mpu6050_getRawAcc(int16_t acc[3]);
 int32_t mpu6050_getRawGyr(int16_t gyr[3]);

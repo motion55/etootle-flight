@@ -126,8 +126,8 @@ public class MainActivity extends SimpleBaseGameActivity implements ButtonGroup.
 	public EngineOptions onCreateEngineOptions() {
 		DisplayMetrics m = new DisplayMetrics(); 
 		getWindowManager().getDefaultDisplay().getMetrics(m);
-		SCREEN_WIDTH = m.widthPixels/2;
-		SCREEN_HEIGHT = m.heightPixels/2;
+		SCREEN_WIDTH = m.widthPixels/ (m.densityDpi / 120);
+		SCREEN_HEIGHT = m.heightPixels/ (m.densityDpi / 120);
 		mViewSetting.restore(this, PRE_NAME);
 		mNetSetting.restore(this, PRE_NAME);
 		mBlueSetting.restore(this, PRE_NAME);

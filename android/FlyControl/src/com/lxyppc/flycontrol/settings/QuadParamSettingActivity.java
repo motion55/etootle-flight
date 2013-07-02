@@ -65,12 +65,13 @@ public class QuadParamSettingActivity extends TabActivity {
 		spec.setContent(intent);
 		host.addTab(spec);
 		
-		
+		/*
 		final int height = 45;
 		host.getTabWidget().getChildAt(0).getLayoutParams().height = height;
 		host.getTabWidget().getChildAt(1).getLayoutParams().height = height;
 		host.getTabWidget().getChildAt(2).getLayoutParams().height = height;
 		host.getTabWidget().getChildAt(3).getLayoutParams().height = height;
+		*/
 	}
 	
 	protected void onDestroy(){

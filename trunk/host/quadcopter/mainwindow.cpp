@@ -1,20 +1,19 @@
 ﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
-//         ========圆点博士微型四轴飞行器配套程序声明========
+//         ==================================================
+//         ========圆点博士微型四轴飞行器配套软件声明========
+//         ==================================================
+//     圆点博士微型四轴飞行器配套软件包括上位机程序、下位机Bootloader
+// 、下位机App和遥控程序，及它们的源代码，以下总称“软件”。
+//     软件仅提供参考，js200300953不对软件作任何担保，不对因使用该软件
+// 而出现的损失负责。
+//     软件可以以学习为目的修改和使用，但不允许以商业的目的使用该软件。
+//     修改该软件时，必须保留原版权声明。
 // 
-// 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
-//     下位机App，及它们的源代码，以下总称“程序”。
-// 程序由js200300953编写。
-// 程序仅为使用者提供参考，js200300953不对程序提供任何明示或暗含的担保，
-//     不对在使用该程序中出现的意外或者损失负责，
-//     也不对因使用该程序而引起的第三方索赔负责。
-// 使用者可以以学习为目的修改和使用该程序，请勿以商业的目的使用该程序。
-// 修改该程序时，必须保留原版权声明，并且不能修改原版权声明。
-// 
-// 更多资料见：
-//     http://blog.sina.com.cn/js200300953
-//     http://www.etootle.com/
-//     http://www.amobbs.com/thread-5504090-1-1.html
-//     圆点博士微型四轴飞行器QQ群：276721324
+//     更多资料见：
+// http://blog.sina.com.cn/js200300953
+// http://www.etootle.com/
+// http://www.eeboard.com/bbs/forum-98-1.html#separatorline
+// 圆点博士微型四轴飞行器QQ群：276721324
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -74,11 +73,6 @@ MainWindow::MainWindow(QWidget *parent) :
             &binaryParser,SLOT(control_lockAttitude(QByteArray)));
     connect(&binaryParser,SIGNAL(onControlLockAttitude(QByteArray)),
             &m_dialogControl,SLOT(onLockAttitude(QByteArray)));
-    connect(&m_dialogControl,SIGNAL(on_tcp_data(QByteArray)),
-            &binaryParser, SLOT(onReceivedData(QByteArray)));
-    connect(&binaryParser,SIGNAL(onControlRawData(QByteArray)),
-            &m_dialogControl, SLOT(onContralRawData(QByteArray)));
-
     //
     // 参数面板与二进制解析器。
     connect(&m_dialogParameter,SIGNAL(parameter(QByteArray)),
@@ -107,6 +101,18 @@ MainWindow::MainWindow(QWidget *parent) :
             &binaryParser,SLOT(cmd_bootloadCmd(uint8_t,QByteArray)));
     connect(&binaryParser,SIGNAL(onBootloaderStatus(uint8_t,QByteArray)),
             &m_dialogBootloader,SLOT(onStatus(uint8_t,QByteArray)));
+    //
+    // 参数与校正。
+    connect(&m_dialogCalibration,SIGNAL(makeGyrOffset(QVector<float>)),
+            &m_dialogParameter,SLOT(onMakeGyrOffset(QVector<float>)));
+    connect(&m_dialogCalibration,SIGNAL(makeAccParam(QVector<float>)),
+            &m_dialogParameter,SLOT(onMakeAccParam(QVector<float>)));
+    connect(&m_dialogCalibration,SIGNAL(makeMagParam(QVector<float>)),
+            &m_dialogParameter,SLOT(onMakeMagParam(QVector<float>)));
+    //
+    // 控制与参数。
+    connect(&m_dialogControl,SIGNAL(makeHorizontalAttitude(Quaternion)),
+            &m_dialogParameter,SLOT(onMakeHorizontalAttitude(Quaternion)));
 }
 
 MainWindow::~MainWindow()
@@ -202,7 +208,6 @@ void MainWindow::printInitInfo()
                   "正在获取最新信息..."));
     //
     QUrl url("http://www.etootle.com/product/4xaircraft/4x_version_info.html");
-    //QUrl url("4x_version_info.html");
     //
     m_reply = m_network.get(QNetworkRequest(url));
     connect(m_reply,SIGNAL(finished()),this,SLOT(onReplyFinish()));

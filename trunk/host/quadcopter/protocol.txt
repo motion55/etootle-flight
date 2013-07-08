@@ -1,4 +1,4 @@
-协议版本：0（调试）
+﻿协议版本：0（调试）
 帧类型：
     0x01 => 返回四元数姿态，参数：wxyz，4个32位浮点数。
     0x02 => 加速度计、罗盘校正，参数：xyz，3个浮点数。
@@ -85,6 +85,8 @@
             code=0x11，读RAM，可选参数={pos:8 + len:8}。
             code=0x12，返回RAM的值，可选参数={pos:8 + 值数组32*n}。
             code=0x13，写入RAM，可选参数={pos:8 + 值数组32*n}。
+            code=0x14，RAM特殊操作，可选参数={op:8 + 操作参数}
+                op=0x01，融合水平姿态，操作参数={wxyz:float}。
             code=0x21，读Flash，可选参数={pos:8 + len:8}。
             code=0x22，返回Flash的值，可选参数={pos:8 + 值数组32*n}。
             code=0x23，写入Flash，没有可选参数。
@@ -96,4 +98,6 @@
             code=0x01，起飞前准备，param={空}。包括航偏角校正等。
             code=0x02，已准备好起飞，param={空}。
             code=0x03，未准备好起飞，param={空}。
-            code=0x04，设定控制参数，param={float twxyz[4]}，t为基础油门，wxyz为控制旋转。
+            code=0x04，设定控制参数，param={float twxyz[5]}，t为基础油门，wxyz为控制旋转。
+    0x1F => 采集原始数据。
+            参数={count:uint32_t + gyr:int16_t[3] + acc:int16_t[3] [+ mag:int16_t[3]]}

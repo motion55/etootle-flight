@@ -51,7 +51,8 @@ SOURCES += main.cpp\
     dialogbootloader/filereader.cpp \
     dialogparameter/dialogparameter.cpp \
     dialogcontrol/dialogcameracontrol.cpp \
-    dialogcontrol/dialogtcpserver.cpp
+    dialogcontrol/dialogtcpserver.cpp \
+    dialogparameter/itemdelegate.cpp
 
 HEADERS  += mainwindow.h \
     globject/vector.h \
@@ -91,7 +92,8 @@ HEADERS  += mainwindow.h \
     dialogbootloader/filereader.h \
     dialogparameter/dialogparameter.h \
     dialogcontrol/dialogcameracontrol.h \
-    dialogcontrol/dialogtcpserver.h
+    dialogcontrol/dialogtcpserver.h \
+    dialogparameter/itemdelegate.h
 
 FORMS    += mainwindow.ui \
     dialogcalibration/dialogcalibration.ui \

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>标定加速度计和罗盘</string>
+   <string>校正</string>
   </property>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
@@ -41,28 +41,12 @@
        <attribute name="title">
         <string>数据源</string>
        </attribute>
-       <widget class="QCheckBox" name="inputEnable">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>71</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>接收输入</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
        <widget class="QGroupBox" name="groupBox_2">
         <property name="geometry">
          <rect>
-          <x>19</x>
-          <y>49</y>
-          <width>161</width>
+          <x>10</x>
+          <y>10</y>
+          <width>191</width>
           <height>91</height>
          </rect>
         </property>
@@ -74,7 +58,7 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>145</width>
+           <width>171</width>
            <height>72</height>
           </rect>
          </property>
@@ -107,15 +91,28 @@
          </layout>
         </widget>
        </widget>
-       <widget class="QComboBox" name="dataType">
+       <widget class="QGroupBox" name="groupBox_3">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>150</y>
-          <width>143</width>
-          <height>20</height>
+          <x>10</x>
+          <y>110</y>
+          <width>191</width>
+          <height>51</height>
          </rect>
         </property>
+        <property name="title">
+         <string>获取的向量</string>
+        </property>
+        <widget class="QComboBox" name="dataType">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>171</width>
+           <height>20</height>
+          </rect>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="tab">
@@ -363,105 +360,154 @@
        <attribute name="title">
         <string>计算</string>
        </attribute>
-       <widget class="QWidget" name="verticalLayoutWidget">
+       <widget class="QGroupBox" name="groupBox_4">
         <property name="geometry">
          <rect>
-          <x>-1</x>
-          <y>-1</y>
-          <width>211</width>
-          <height>381</height>
+          <x>5</x>
+          <y>5</y>
+          <width>201</width>
+          <height>261</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <property name="leftMargin">
-          <number>3</number>
+        <property name="title">
+         <string>加速度计和罗盘</string>
+        </property>
+        <widget class="QWidget" name="verticalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>181</width>
+           <height>231</height>
+          </rect>
          </property>
-         <property name="topMargin">
-          <number>3</number>
-         </property>
-         <property name="rightMargin">
-          <number>3</number>
-         </property>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>目标球的半径:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="radius">
-             <property name="text">
-              <string>1.0</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QPushButton" name="bt_calculate">
-           <property name="text">
-            <string>计算</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_12">
-           <property name="text">
-            <string>结果(已加预偏移)：</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTextBrowser" name="result">
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>110</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>拟合公式为：</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTextBrowser" name="textBrowser_2">
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>55</height>
-            </size>
-           </property>
-           <property name="html">
-            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="leftMargin">
+           <number>3</number>
+          </property>
+          <property name="topMargin">
+           <number>3</number>
+          </property>
+          <property name="rightMargin">
+           <number>3</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>目标球的半径:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="radius">
+              <property name="text">
+               <string>1.0</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="bt_calculate">
+            <property name="text">
+             <string>计算椭球参数</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>结果(已加预偏移)：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextBrowser" name="result">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>110</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'宋体'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;拟合公式为：&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;x_c = (x_m + X_OFFSET) * X_GAIN; &lt;br /&gt;y_c = (y_m + Y_OFFSET) * Y_GAIN;&lt;br /&gt;z_c = (z_m + Z_OFFSET) * Z_GAIN;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'宋体'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btMakeAccParam">
+            <property name="text">
+             <string>作为加速度计校正参数</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btMakeMagParam">
+            <property name="text">
+             <string>作为罗盘校正参数</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>270</y>
+          <width>201</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>陀螺</string>
+        </property>
+        <widget class="QWidget" name="verticalLayoutWidget_5">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>181</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QPushButton" name="btMakeGyrOffset">
+            <property name="text">
+             <string>计算均值，并作为陀螺偏移值</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="leGyrAverage">
+            <property name="toolTip">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'宋体'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;这是&lt;span style=&quot; font-weight:600;&quot;&gt;平均值&lt;/span&gt;，即&lt;span style=&quot; font-weight:600;&quot;&gt;偏移值&lt;/span&gt;。&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;偏移的校正值&lt;/span&gt;是&lt;span style=&quot; font-weight:600;&quot;&gt;偏移值&lt;/span&gt;的相反数。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_4">
@@ -532,7 +578,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>autoGetData</tabstop>
   <tabstop>dataType</tabstop>
   <tabstop>autoGetDataInterval</tabstop>
-  <tabstop>inputEnable</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>bt_input</tabstop>
   <tabstop>preOffset_x</tabstop>
@@ -548,7 +593,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>radius</tabstop>
   <tabstop>bt_calculate</tabstop>
   <tabstop>result</tabstop>
-  <tabstop>textBrowser_2</tabstop>
   <tabstop>displayEllipsoid</tabstop>
   <tabstop>btCheckValue</tabstop>
   <tabstop>btCheckLength</tabstop>

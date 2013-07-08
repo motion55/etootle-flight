@@ -1,27 +1,25 @@
 ﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
-//         ========圆点博士微型四轴飞行器配套程序声明========
+//         ==================================================
+//         ========圆点博士微型四轴飞行器配套软件声明========
+//         ==================================================
+//     圆点博士微型四轴飞行器配套软件包括上位机程序、下位机Bootloader
+// 、下位机App和遥控程序，及它们的源代码，以下总称“软件”。
+//     软件仅提供参考，js200300953不对软件作任何担保，不对因使用该软件
+// 而出现的损失负责。
+//     软件可以以学习为目的修改和使用，但不允许以商业的目的使用该软件。
+//     修改该软件时，必须保留原版权声明。
 // 
-// 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
-//     下位机App，及它们的源代码，以下总称“程序”。
-// 程序由js200300953编写。
-// 程序仅为使用者提供参考，js200300953不对程序提供任何明示或暗含的担保，
-//     不对在使用该程序中出现的意外或者损失负责，
-//     也不对因使用该程序而引起的第三方索赔负责。
-// 使用者可以以学习为目的修改和使用该程序，请勿以商业的目的使用该程序。
-// 修改该程序时，必须保留原版权声明，并且不能修改原版权声明。
-// 
-// 更多资料见：
-//     http://blog.sina.com.cn/js200300953
-//     http://www.etootle.com/
-//     http://www.amobbs.com/thread-5504090-1-1.html
-//     圆点博士微型四轴飞行器QQ群：276721324
+//     更多资料见：
+// http://blog.sina.com.cn/js200300953
+// http://www.etootle.com/
+// http://www.eeboard.com/bbs/forum-98-1.html#separatorline
+// 圆点博士微型四轴飞行器QQ群：276721324
 
 #include <Qt>
 #include "dialogcontrol.h"
 #include "ui_dialogcontrol.h"
 #include "protocol.h"
 #include <QSettings>
-#include "mymath.h"
 
 static const char * SETTINGS_MOUSE_SENSITITIVITY = "control/mouse_sensitivity";
 
@@ -31,7 +29,6 @@ DialogControl::DialogControl(QWidget *parent) :
     m_currentMode(HALT),
     m_baseThrottle(0),
     m_dialogCameraControl(this),
-    m_dialogTcpServer(this),
     m_lockAttitudeCanSend(true),
     m_lockAttitudeNeedSend(false)
 {
@@ -48,9 +45,6 @@ DialogControl::DialogControl(QWidget *parent) :
             this,SLOT(lockAttitude_onControlChanged()));
     connect(&m_lockAttitudeTimer,SIGNAL(timeout()),
             this,SLOT(onLockAttitudeTimer()));
-    connect(&m_dialogTcpServer, SIGNAL(controlDataReady(ControlData)),
-            this,SLOT(onControlData(ControlData)));
-    connect(&m_dialogTcpServer, SIGNAL(tcp_data(QByteArray)),  this, SIGNAL(on_tcp_data(QByteArray)));
     //
 }
 
@@ -221,19 +215,10 @@ float DialogControl::getFloat(QLineEdit *from, float default_)
 
 void DialogControl::lockAttitude_sendControl()
 {
-    Quaternion all;
-    if(ui->lockAttitude_cbCameraControl->isChecked())
-    {
-        all = m_dialogCameraControl.getControl();
-        all.multiply(ui->lockAttitude_widget->getControl());
-    }
-    else
-        all = ui->lockAttitude_widget->getControl();
-    //
     QByteArray send;
     send.append(Protocol::LockAttitude::CONTROL);
     send.append((const char *)&m_baseThrottle,4);
-    send.append((const char *)all.value(),4*4);
+    send.append((const char *)lockAttitude_getControlAttitude().value(),4*4);
     //
     emit lockAttitude(send);
 }
@@ -244,6 +229,20 @@ void DialogControl::loadSettings()
     //
     ui->lockAttitude_hsSensitivity->setValue
             (settings.value(SETTINGS_MOUSE_SENSITITIVITY,QVariant(49)).toInt());
+}
+
+Quaternion DialogControl::lockAttitude_getControlAttitude()
+{
+    Quaternion all;
+    if(ui->lockAttitude_cbCameraControl->isChecked())
+    {
+        all = m_dialogCameraControl.getControl();
+        all.multiply(ui->lockAttitude_widget->getControl());
+    }
+    else
+        all = ui->lockAttitude_widget->getControl();
+    //
+    return all;
 }
 
 void DialogControl::on_heartbeat_enable_clicked(bool checked)
@@ -312,50 +311,6 @@ void DialogControl::onLockAttitude(const QByteArray &param)
 {
 }
 
-void DialogControl::onContralRawData(const QByteArray & param)
-{
-    ControlData data;
-    memcpy(&data, param.constData(), sizeof(data));
-    onControlData(data);
-}
-
-void DialogControl::onControlData(const ControlData& data)
-{
-    short thro = 0;
-    short x,y;
-    static short lastBtn = -1;
-    if(ui->lockAttitude_cbPhoneControl_leftThro->isChecked()){
-        thro = data.y1;
-        x = data.x2;
-        y = data.y2;
-    }else{
-        thro = data.y2;
-        x = data.x1;
-        y = data.y1;
-    }
-    if(ui->lockAttitude_cbPhoneControl_ABSThro->isChecked()){
-        thro = -thro;
-        if(thro<0) thro = 0;
-        else thro = thro/2;
-        ui->lockAttitude_throttleBase->setValue(thro/10);
-    }else{
-        lockAttitude_changeThrottle(-thro/500);
-    }
-    ui->lockAttitude_widget->update_pos(x/20,-y/20);
-    if(lastBtn != -1 && ((lastBtn^data.button) & 1)){
-        if(data.button & 1){
-            // button 1 down
-            if(ui->lockAttitude_cbPhoneControl_refly->isChecked()){
-                emit setMode(Protocol::ControlMode::LOCK_ATTITUDE);
-                QByteArray send;
-                send.append(Protocol::LockAttitude::GET_READY);
-                emit lockAttitude(send);
-            }
-        }
-    }
-    lastBtn = data.button;
-}
-
 void DialogControl::on_btGetReady_clicked()
 {
     QByteArray send;
@@ -384,50 +339,7 @@ void DialogControl::onLockAttitudeTimer()
     m_lockAttitudeNeedSend = false;
 }
 
-void DialogControl::on_lockAttitude_btPhoneSetting_clicked()
+void DialogControl::on_btMakeHorizontalAttitude_clicked()
 {
-    m_dialogTcpServer.showNormal();
-    m_dialogTcpServer.raise();
+    emit makeHorizontalAttitude(lockAttitude_getControlAttitude());
 }
-
-void DialogControl::on_lockAttitude_cbPhoneControl_clicked(bool checked)
-{
-    ui->lockAttitude_btPhoneSetting->setEnabled(checked);
-    ui->lockAttitude_cbPhoneControl_leftThro->setEnabled(checked);
-}
-
-void DialogControl::on_lockAttitude_cbPhoneControl_leftThro_clicked()
-{
-    char head[] = {0x55,0xaa, 2, Protocol::VERSION, Protocol::RETURN_MESSAGE};
-    const char* str =  "\xE8\xBF\x9B\xE5\x85\xA5\xE5\x81"
-            "\x9C\xE6\x9C\xBA\xE6\xA8\xA1\xE5\xBC\x8F"
-            /*"进入停机模式"*/;
-    static int i = 0;
-    i++;
-    if(i&1){
-        str = "\xE8\xBF\x9B\xE5\x85\xA5\xE9\x94"
-                "\x81\xE5\xAE\x9A\xE5\xA7\xBF\xE6"
-                "\x80\x81\xE6\xA8\xA1\xE5\xBC\x8F";
-    }
-
-    QByteArray ba;
-    head[2] = strlen(str) + 4;
-    ba.append(head,sizeof(head));
-    ba.append(str, strlen(str));
-
-    char protocol = Protocol::VERSION;
-    char type = Protocol::RETURN_MESSAGE;
-    uint16_t crc = MyMath::crc16(0,&protocol,1);
-    crc = MyMath::crc16(crc,&type,1);
-    crc = MyMath::crc16(crc,str,strlen(str));
-    ba.append((uint8_t)(crc >> 8));
-    ba.append((uint8_t)crc);
-    m_dialogTcpServer.send_tcp_data(ba);
-}
-
-
-
-
-
-
-

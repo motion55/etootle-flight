@@ -1,20 +1,19 @@
 ﻿//     Copyright (c) 2013 js200300953@qq.com All rights reserved.
-//         ========圆点博士微型四轴飞行器配套程序声明========
+//         ==================================================
+//         ========圆点博士微型四轴飞行器配套软件声明========
+//         ==================================================
+//     圆点博士微型四轴飞行器配套软件包括上位机程序、下位机Bootloader
+// 、下位机App和遥控程序，及它们的源代码，以下总称“软件”。
+//     软件仅提供参考，js200300953不对软件作任何担保，不对因使用该软件
+// 而出现的损失负责。
+//     软件可以以学习为目的修改和使用，但不允许以商业的目的使用该软件。
+//     修改该软件时，必须保留原版权声明。
 // 
-// 圆点博士微型四轴飞行器配套程序包括上位机程序、下位机Bootloader和
-//     下位机App，及它们的源代码，以下总称“程序”。
-// 程序由js200300953编写。
-// 程序仅为使用者提供参考，js200300953不对程序提供任何明示或暗含的担保，
-//     不对在使用该程序中出现的意外或者损失负责，
-//     也不对因使用该程序而引起的第三方索赔负责。
-// 使用者可以以学习为目的修改和使用该程序，请勿以商业的目的使用该程序。
-// 修改该程序时，必须保留原版权声明，并且不能修改原版权声明。
-// 
-// 更多资料见：
-//     http://blog.sina.com.cn/js200300953
-//     http://www.etootle.com/
-//     http://www.amobbs.com/thread-5504090-1-1.html
-//     圆点博士微型四轴飞行器QQ群：276721324
+//     更多资料见：
+// http://blog.sina.com.cn/js200300953
+// http://www.etootle.com/
+// http://www.eeboard.com/bbs/forum-98-1.html#separatorline
+// 圆点博士微型四轴飞行器QQ群：276721324
 
 #include "dialogcalibration.h"
 #include "ui_dialogcalibration.h"
@@ -31,7 +30,7 @@ DialogCalibration::DialogCalibration(QWidget *parent) :
     setupDataOption();
     //
     m_sampleCountdown = 0;
-    m_idSampling = false;
+    m_isSampling = false;
     m_radius = 1;
     m_dataType = Protocol::VectorType::RAW_ACC;
     for(int i=0;i<3;i++)
@@ -60,8 +59,16 @@ void DialogCalibration::resizeEvent(QResizeEvent * event)
 
 void DialogCalibration::closeEvent(QCloseEvent * event)
 {
-    ui->autoGetData->setChecked(false);
-    ui->inputEnable->setChecked(false);
+    ui->autoGetData->setChecked(Qt::Unchecked);
+}
+
+void DialogCalibration::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        ui->autoGetData->setChecked(Qt::Unchecked);
+    }
+    QDialog::keyPressEvent(event);
 }
 
 unsigned int DialogCalibration::getUintFromLineEdit(QLineEdit *from, unsigned int default_)
@@ -98,14 +105,14 @@ void DialogCalibration::onGetXyz(uint8_t type,float x, float y, float z)
 {
     if(type != m_dataType)
         return;
-    if(!this->isVisible() || ! ui->inputEnable->isChecked())
+    if(!this->isVisible())
         return;
     //
     float x_d = x + m_preOffset[0];
     float y_d = y + m_preOffset[1];
     float z_d = z + m_preOffset[2];
     //
-    if(m_idSampling && m_sampleCountdown > 0)
+    if(m_isSampling && m_sampleCountdown > 0)
     {
         m_sampleCountdown --;
         if(m_sampleCountdown <= 0)
@@ -136,9 +143,9 @@ void DialogCalibration::on_bt_input_clicked()
         ui->bt_input->setText(QString::fromUtf8("停止采集"));
         ui->samplesPerTime->setEnabled(false);
         //
-        if(! m_idSampling)
+        if(! m_isSampling)
         {
-            m_idSampling = true;
+            m_isSampling = true;
             ui->preOffset->setEnabled(false);
             //
             m_preOffset[0] = getFloatFromLineEdit(ui->preOffset_x,0);
@@ -161,7 +168,7 @@ void DialogCalibration::on_bt_input_clicked()
 void DialogCalibration::on_bt_clear_clicked()
 {
     m_sampleCountdown = 0;
-    m_idSampling = false;
+    m_isSampling = false;
     //
     ui->sample->clear();
     ui->view->clearPoints();
@@ -239,7 +246,7 @@ void DialogCalibration::on_bt_calculate_clicked()
     str.append(";\n");
     str.append("Z_GAIN   = ");
     str.append(tmp.sprintf("%g",m_resultScale[2]));
-    str.append(";\n");
+    str.append(";");
     ui->result->setText(str);
     //
     // 刷新图形。
@@ -408,4 +415,77 @@ void DialogCalibration::on_dataType_currentIndexChanged(int index)
     int type = ui->dataType->itemData(index).toInt(&ok);
     if(ok)
         m_dataType = type;
+}
+
+void DialogCalibration::on_btMakeGyrOffset_clicked()
+{
+    float sx = 0;
+    float sy = 0;
+    float sz = 0;
+    int32_t count = 0;
+    //
+    QString samples = ui->sample->toPlainText();
+    QTextStream ts(&samples);
+    while(! ts.atEnd())
+    {
+        QString line = ts.readLine();
+        QStringList sl = line.split(QRegExp("\\s+"),QString::SkipEmptyParts);
+        if(sl.size() < 3)
+            continue;
+        //
+        bool ok = false;
+        float x = sl[0].toFloat(&ok);
+        if(! ok)
+            continue;
+        float y = sl[1].toFloat(&ok);
+        if(! ok)
+            continue;
+        float z = sl[2].toFloat(&ok);
+        if(! ok)
+            continue;
+        //
+        sx += x;
+        sy += y;
+        sz += z;
+        count ++;
+    }
+    //
+    if(count != 0)
+    {
+        sx /= count;
+        sy /= count;
+        sz /= count;
+    }
+    sx -= m_preOffset[0];
+    sy -= m_preOffset[1];
+    sz -= m_preOffset[2];
+    //
+    ui->leGyrAverage->setText(QString("%1 %2 %3").arg(sx).arg(sy).arg(sz));
+    QVector<float> offset(3);
+    offset[0] = -sx; // 偏移校正等于偏移值的相反数。
+    offset[1] = -sy;
+    offset[2] = -sz;
+    emit makeGyrOffset(offset);
+}
+
+void DialogCalibration::on_btMakeAccParam_clicked()
+{
+    QVector<float> param;
+    for(int i=0;i< 3;i++)
+        param.append(m_resultOffset_noPre[i] + m_preOffset[i]);
+    for(int i=0;i< 3;i++)
+        param.append(m_resultScale[i]);
+    //
+    emit makeAccParam(param);
+}
+
+void DialogCalibration::on_btMakeMagParam_clicked()
+{
+    QVector<float> param;
+    for(int i=0;i< 3;i++)
+        param.append(m_resultOffset_noPre[i] + m_preOffset[i]);
+    for(int i=0;i< 3;i++)
+        param.append(m_resultScale[i]);
+    //
+    emit makeMagParam(param);
 }
